@@ -1,0 +1,47 @@
+# ==============================
+# S-O-EEND-SDR Stable Requirements
+# Windows | CPU | Python 3.10
+# ==============================
+
+# -------- Core Numerical Stack --------
+numpy==1.26.4
+scipy==1.11.4
+
+# -------- PyTorch (CPU only) ----------
+torch==2.1.2
+torchaudio==2.1.2
+
+# -------- Audio Processing ------------
+librosa==0.10.1
+soundfile==0.12.1
+audioread==3.0.1
+
+# -------- Speaker Diarization ----------
+pyannote.audio==3.1.1
+pyannote.core==5.0.0
+pyannote.database==5.0.1
+pyannote.pipeline==3.0.1
+pyannote.metrics==3.2.1
+
+# -------- ASR (WhisperX) ---------------
+whisperx==3.1.1
+faster-whisper==1.0.3
+ctranslate2==4.3.1
+
+# -------- Hugging Face / NLP ----------
+huggingface-hub==0.23.4
+transformers==4.38.2
+tokenizers==0.15.2
+
+# -------- Training Utilities ----------
+pytorch-lightning==2.1.4
+lightning-utilities==0.10.1
+torchmetrics==1.3.2
+
+# -------- Speaker Embeddings ----------
+resemblyzer==0.1.4
+
+# -------- Misc Utilities --------------
+tqdm==4.66.2
+requests==2.31.0
+packaging==23.2
