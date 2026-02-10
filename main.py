@@ -71,7 +71,8 @@ def format_final_output(segments: List[Dict]) -> str:
 def run_pipeline(audio_file: str, output_json: str = None, 
                 hf_token: str = None, whisper_model: str = "base",
                 speaker_threshold: float = 0.75, merge_gap: float = 0.5,
-                enable_auth_filter: bool = True) -> Dict:
+                enable_auth_filter: bool = True,
+                registry_path: str = None) -> Dict:
     """
     Run the complete S-O-EEND-SDR pipeline.
     
@@ -139,8 +140,11 @@ def run_pipeline(audio_file: str, output_json: str = None,
     # Step 5: Speaker Identification (Open-Set)
     print("Step 5: Speaker identification (open-set)...")
     try:
+        id_kwargs = {"threshold": speaker_threshold}
+        if registry_path:
+            id_kwargs["registry_path"] = registry_path
         identified_segments = identify_speakers_in_segments(
-            aligned_segments, audio_file, threshold=speaker_threshold
+            aligned_segments, audio_file, **id_kwargs
         )
         print(f"  ✓ Identified speakers for {len(identified_segments)} segments\n")
     except Exception as e:
@@ -223,6 +227,8 @@ Examples:
                        help='Maximum gap in seconds to merge adjacent segments (default: 0.5)')
     parser.add_argument('--no-auth-filter', action='store_true',
                         help='Disable speaker authorization filter (include all speakers)')
+    parser.add_argument('--registry', type=str, default=None,
+                       help='Path to speaker registry JSON (default: data/speaker_registry.json)')
     
     args = parser.parse_args()
     
@@ -240,7 +246,8 @@ Examples:
             whisper_model=args.whisper_model,
             speaker_threshold=args.speaker_threshold,
             merge_gap=args.merge_gap,
-            enable_auth_filter=not args.no_auth_filter
+            enable_auth_filter=not args.no_auth_filter,
+            registry_path=args.registry
         )
     except KeyboardInterrupt:
         print("\n\nPipeline interrupted by user.")

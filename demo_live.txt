@@ -1,0 +1,131 @@
+=====================================
+  DEMO 2: LIVE MIC DEMONSTRATION
+  Speaker Authorization Pipeline
+=====================================
+
+This demo records YOUR voice live, mixes it into an existing
+conversation, and shows that ONLY your voice gets transcribed
+while all other speakers are filtered out.
+
+
+SETUP (Do this BEFORE demo day)
+===============================
+
+1. Open PowerShell and navigate to the project:
+
+   cd R:\capstone\Speaker-Diarization
+
+2. Activate the virtual environment:
+
+   venv\Scripts\activate
+
+3. Install the recording library (one-time):
+
+   pip install sounddevice
+
+4. Set your HuggingFace token:
+
+   $env:HF_TOKEN = "your_token_here"
+
+5. TEST your microphone works:
+
+   python -c "import sounddevice; print(sounddevice.query_devices())"
+
+   Make sure your mic is listed and set as default.
+
+6. PRE-DOWNLOAD models (so demo doesn't wait for downloads):
+
+   python main.py data/sample.wav --output results/warmup.json
+
+   This forces all models to download. Can take 2-5 min first time.
+
+
+LIVE DEMONSTRATION STEPS
+=========================
+
+Step 1: Record Your Voice (15 seconds)
+---------------------------------------
+"I'm going to record my voice for 15 seconds.
+ This will create my voiceprint for authorization."
+
+   python live_test/record_voice.py
+
+Follow the prompts. Speak clearly for 15 seconds.
+Say something like:
+  "Hello, my name is [Your Name]. I am testing the
+   speaker authorization system. This system should
+   only transcribe my voice and filter out everyone else."
+
+Output: live_test/my_voice.wav
+
+
+Step 2: Build the Mixed Conversation
+-------------------------------------
+"Now I'll splice my voice into an existing conversation
+ with 5 other speakers. My voice will appear at the
+ beginning, middle, and end."
+
+   python live_test/build_live_conversation.py
+
+Output: live_test/live_conversation.wav (~7 minutes)
+
+
+Step 3: Run the Full Pipeline
+-----------------------------
+"Now comes the magic. I'll run the pipeline with ONLY
+ my voice enrolled as authorized. All 5 other speakers
+ should be completely filtered out."
+
+   python live_test/run_live_demo.py
+
+This script will:
+  1. Enroll your voice in live_test/live_registry.json
+  2. Run the pipeline on live_conversation.wav
+  3. Display ONLY your transcribed segments
+
+Wait ~3-5 minutes for processing.
+
+
+Step 4: Show Results
+--------------------
+Expected output:
+   Total segments in audio  : ~70+
+   Authorized (your voice)  : ~3-5 segments
+   Filtered out (others)    : ~65+ segments
+
+   ── Your Transcribed Segments ──
+   [0.0-5.0]  DEMO_USER (sim=0.88): Hello my name is...
+   [120.5-125.0] DEMO_USER (sim=0.85): I am testing...
+   [240.0-245.0] DEMO_USER (sim=0.82): This system should...
+
+"As you can see, ONLY my voice was transcribed.
+ All 5 other speakers were correctly identified as
+ unauthorized and filtered out. Zero false acceptances."
+
+
+Step 5: Emphasize Key Points
+-----------------------------
+- "The system uses speaker EMBEDDINGS (voiceprints),
+   not passwords or keywords."
+- "It works even when mixed with many other speakers."
+- "False Acceptance Rate: 0% — no imposter got through."
+- "The threshold is 0.75 cosine similarity."
+
+
+IMPORTANT NOTES
+===============
+- The live_test/ folder uses its OWN registry (live_registry.json)
+  and does NOT touch the main data/speaker_registry.json.
+- If your voice isn't matched, try recording again in a quiet room.
+- The first pipeline run downloads models. Do this BEFORE demo day.
+- Each demo run takes ~3-5 minutes for ~7 min audio.
+
+
+CLEANUP (After Demo)
+=====================
+To reset for another demo run:
+
+   del live_test\my_voice.wav
+   del live_test\live_conversation.wav
+   del live_test\live_registry.json
+   del live_test\live_results.json
