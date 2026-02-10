@@ -1,0 +1,54 @@
+{
+  "audio_file": "data\\test_conversation.wav",
+  "num_segments": 6,
+  "segments": [
+    {
+      "start": 0.208,
+      "end": 3.37,
+      "text": "Morrell suffered an exclamation of horror and surprised to escape him.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Alice",
+      "similarity_score": 0.8541168417779247
+    },
+    {
+      "start": 4.85,
+      "end": 9.052,
+      "text": "But he stopped on the landing. He had not the courage to again visit the death chamber.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Alice",
+      "similarity_score": 0.9008688736013944
+    },
+    {
+      "start": 10.833,
+      "end": 15.715,
+      "text": "She would not speak that we danced awake, with her thoughts a thousand leagues over the water.",
+      "speaker_label": "SPEAKER_03",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.8500614574614916
+    },
+    {
+      "start": 16.575,
+      "end": 20.637,
+      "text": "Singer, singer, wandering singer, oh my honey sweet singer.",
+      "speaker_label": "SPEAKER_03",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.797873476967144
+    },
+    {
+      "start": 22.738,
+      "end": 24.419,
+      "text": "I don't know what becomes of the ladies.",
+      "speaker_label": "SPEAKER_03",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.8143791101937841
+    },
+    {
+      "start": 53.747,
+      "end": 56.187,
+      "text": "He lifted his glass. Here's to you, little Hilda.",
+      "speaker_label": "SPEAKER_01",
+      "identified_speaker": "Alice",
+      "similarity_score": 0.7592395706377736
+    }
+  ]
+}

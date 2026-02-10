@@ -24,15 +24,15 @@ Thumbs.db
 *.bin
 *.onnx
 
-# Data - large downloads & generated test audio
-data/dev-clean.tar.gz
-data/*.wav
-data/speakers/
-data/benchmark_speakers/
-data/benchmark_enhanced/
+# Data - Limit large files
+data/dev-clean.tar.gz  # Too big for GitHub (300MB+), download via script instead
 
-# Results - all generated output (keep in results/ locally)
-results/
+# Results and small data - ALLOWED (un-ignored)
+# We want to push results/, registries, and test audio for the demo
+# results/
+# data/*.wav
+# data/speakers/
+# data/benchmark_*
 
 # Old anti-spoofing module
 spoofing/

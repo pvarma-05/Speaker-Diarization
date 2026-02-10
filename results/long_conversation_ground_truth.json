@@ -1,0 +1,357 @@
+{
+  "total_duration": 373.9,
+  "authorized_speakers": [
+    "Alice",
+    "Bob",
+    "Charlie"
+  ],
+  "unauthorized_speakers": [
+    "Frank",
+    "Grace"
+  ],
+  "segments": [
+    {
+      "start": 0.371,
+      "end": 14.061,
+      "speaker": "Alice",
+      "status": "authorized",
+      "duration": 13.7
+    },
+    {
+      "start": 14.431,
+      "end": 20.286,
+      "speaker": "Charlie",
+      "status": "authorized",
+      "duration": 5.9
+    },
+    {
+      "start": 20.959,
+      "end": 23.104,
+      "speaker": "Bob",
+      "status": "authorized",
+      "duration": 2.1
+    },
+    {
+      "start": 23.673,
+      "end": 27.013,
+      "speaker": "Bob",
+      "status": "authorized",
+      "duration": 3.3
+    },
+    {
+      "start": 27.687,
+      "end": 41.897,
+      "speaker": "Grace",
+      "status": "unauthorized",
+      "duration": 14.2
+    },
+    {
+      "start": 42.411,
+      "end": 45.071,
+      "speaker": "Frank",
+      "status": "unauthorized",
+      "duration": 2.7
+    },
+    {
+      "start": 45.663,
+      "end": 50.063,
+      "speaker": "Alice",
+      "status": "authorized",
+      "duration": 4.4
+    },
+    {
+      "start": 50.544,
+      "end": 59.569,
+      "speaker": "Grace",
+      "status": "unauthorized",
+      "duration": 9.0
+    },
+    {
+      "start": 60.367,
+      "end": 66.232,
+      "speaker": "Grace",
+      "status": "unauthorized",
+      "duration": 5.9
+    },
+    {
+      "start": 66.602,
+      "end": 71.762,
+      "speaker": "Grace",
+      "status": "unauthorized",
+      "duration": 5.2
+    },
+    {
+      "start": 72.308,
+      "end": 98.933,
+      "speaker": "Frank",
+      "status": "unauthorized",
+      "duration": 26.6
+    },
+    {
+      "start": 99.611,
+      "end": 101.611,
+      "speaker": "Alice",
+      "status": "authorized",
+      "duration": 2.0
+    },
+    {
+      "start": 102.342,
+      "end": 109.357,
+      "speaker": "Alice",
+      "status": "authorized",
+      "duration": 7.0
+    },
+    {
+      "start": 109.733,
+      "end": 117.863,
+      "speaker": "Frank",
+      "status": "unauthorized",
+      "duration": 8.1
+    },
+    {
+      "start": 118.243,
+      "end": 123.948,
+      "speaker": "Bob",
+      "status": "authorized",
+      "duration": 5.7
+    },
+    {
+      "start": 124.588,
+      "end": 129.403,
+      "speaker": "Charlie",
+      "status": "authorized",
+      "duration": 4.8
+    },
+    {
+      "start": 130.002,
+      "end": 135.657,
+      "speaker": "Frank",
+      "status": "unauthorized",
+      "duration": 5.7
+    },
+    {
+      "start": 136.149,
+      "end": 148.634,
+      "speaker": "Charlie",
+      "status": "authorized",
+      "duration": 12.5
+    },
+    {
+      "start": 149.232,
+      "end": 151.792,
+      "speaker": "Alice",
+      "status": "authorized",
+      "duration": 2.6
+    },
+    {
+      "start": 152.326,
+      "end": 154.726,
+      "speaker": "Alice",
+      "status": "authorized",
+      "duration": 2.4
+    },
+    {
+      "start": 155.152,
+      "end": 164.687,
+      "speaker": "Frank",
+      "status": "unauthorized",
+      "duration": 9.5
+    },
+    {
+      "start": 165.263,
+      "end": 175.163,
+      "speaker": "Charlie",
+      "status": "authorized",
+      "duration": 9.9
+    },
+    {
+      "start": 175.934,
+      "end": 184.944,
+      "speaker": "Charlie",
+      "status": "authorized",
+      "duration": 9.0
+    },
+    {
+      "start": 185.585,
+      "end": 191.225,
+      "speaker": "Charlie",
+      "status": "authorized",
+      "duration": 5.6
+    },
+    {
+      "start": 191.582,
+      "end": 194.617,
+      "speaker": "Alice",
+      "status": "authorized",
+      "duration": 3.0
+    },
+    {
+      "start": 195.359,
+      "end": 200.574,
+      "speaker": "Bob",
+      "status": "authorized",
+      "duration": 5.2
+    },
+    {
+      "start": 201.25,
+      "end": 212.105,
+      "speaker": "Bob",
+      "status": "authorized",
+      "duration": 10.9
+    },
+    {
+      "start": 212.789,
+      "end": 214.829,
+      "speaker": "Bob",
+      "status": "authorized",
+      "duration": 2.0
+    },
+    {
+      "start": 215.299,
+      "end": 230.209,
+      "speaker": "Bob",
+      "status": "authorized",
+      "duration": 14.9
+    },
+    {
+      "start": 230.656,
+      "end": 232.726,
+      "speaker": "Bob",
+      "status": "authorized",
+      "duration": 2.1
+    },
+    {
+      "start": 233.105,
+      "end": 235.73,
+      "speaker": "Frank",
+      "status": "unauthorized",
+      "duration": 2.6
+    },
+    {
+      "start": 236.032,
+      "end": 254.322,
+      "speaker": "Charlie",
+      "status": "authorized",
+      "duration": 18.3
+    },
+    {
+      "start": 254.983,
+      "end": 260.583,
+      "speaker": "Charlie",
+      "status": "authorized",
+      "duration": 5.6
+    },
+    {
+      "start": 261.242,
+      "end": 276.357,
+      "speaker": "Charlie",
+      "status": "authorized",
+      "duration": 15.1
+    },
+    {
+      "start": 277.143,
+      "end": 282.523,
+      "speaker": "Charlie",
+      "status": "authorized",
+      "duration": 5.4
+    },
+    {
+      "start": 283.204,
+      "end": 286.754,
+      "speaker": "Alice",
+      "status": "authorized",
+      "duration": 3.5
+    },
+    {
+      "start": 287.308,
+      "end": 297.923,
+      "speaker": "Bob",
+      "status": "authorized",
+      "duration": 10.6
+    },
+    {
+      "start": 298.276,
+      "end": 311.731,
+      "speaker": "Bob",
+      "status": "authorized",
+      "duration": 13.5
+    },
+    {
+      "start": 312.344,
+      "end": 320.054,
+      "speaker": "Frank",
+      "status": "unauthorized",
+      "duration": 7.7
+    },
+    {
+      "start": 320.775,
+      "end": 324.63,
+      "speaker": "Grace",
+      "status": "unauthorized",
+      "duration": 3.9
+    },
+    {
+      "start": 325.184,
+      "end": 332.284,
+      "speaker": "Charlie",
+      "status": "authorized",
+      "duration": 7.1
+    },
+    {
+      "start": 332.683,
+      "end": 334.928,
+      "speaker": "Charlie",
+      "status": "authorized",
+      "duration": 2.2
+    },
+    {
+      "start": 335.415,
+      "end": 340.23,
+      "speaker": "Alice",
+      "status": "authorized",
+      "duration": 4.8
+    },
+    {
+      "start": 340.611,
+      "end": 343.221,
+      "speaker": "Alice",
+      "status": "authorized",
+      "duration": 2.6
+    },
+    {
+      "start": 343.998,
+      "end": 357.938,
+      "speaker": "Alice",
+      "status": "authorized",
+      "duration": 13.9
+    },
+    {
+      "start": 358.699,
+      "end": 361.589,
+      "speaker": "Grace",
+      "status": "unauthorized",
+      "duration": 2.9
+    },
+    {
+      "start": 362.348,
+      "end": 366.523,
+      "speaker": "Grace",
+      "status": "unauthorized",
+      "duration": 4.2
+    },
+    {
+      "start": 367.123,
+      "end": 370.733,
+      "speaker": "Frank",
+      "status": "unauthorized",
+      "duration": 3.6
+    },
+    {
+      "start": 371.277,
+      "end": 373.912,
+      "speaker": "Frank",
+      "status": "unauthorized",
+      "duration": 2.6
+    }
+  ]
+}
