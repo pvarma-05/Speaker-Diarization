@@ -176,12 +176,20 @@ def save_speaker_to_registry(speaker_name: str, embedding: np.ndarray,
     # Ensure directory exists
     os.makedirs(os.path.dirname(registry_path), exist_ok=True)
     
+    # Convert any numpy arrays back to lists for JSON serialization
+    serializable_registry = {}
+    for name, data in registry.items():
+        serializable_registry[name] = {
+            'embedding': data['embedding'].tolist() if isinstance(data['embedding'], np.ndarray) else data['embedding'],
+            'metadata': data.get('metadata', {})
+        }
+    
     with open(registry_path, 'w') as f:
-        json.dump(registry, f, indent=2)
+        json.dump(serializable_registry, f, indent=2)
 
 
 def identify_speaker(embedding: np.ndarray, registry: Dict = None,
-                    threshold: float = 0.7, registry_path: str = "data/speaker_registry.json") -> Tuple[str, float]:
+                    threshold: float = 0.75, registry_path: str = "data/speaker_registry.json") -> Tuple[str, float]:
     """
     Identify speaker by comparing embedding with known speakers in registry.
     
@@ -221,7 +229,7 @@ def identify_speaker(embedding: np.ndarray, registry: Dict = None,
 
 def identify_speakers_in_segments(aligned_segments: List[Dict], audio_file: str,
                                   registry_path: str = "data/speaker_registry.json",
-                                  threshold: float = 0.7) -> List[Dict]:
+                                  threshold: float = 0.75) -> List[Dict]:
     """
     Identify speakers for each aligned segment.
     

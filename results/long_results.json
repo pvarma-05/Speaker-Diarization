@@ -1,0 +1,214 @@
+{
+  "audio_file": "data\\long_conversation.wav",
+  "num_segments": 26,
+  "segments": [
+    {
+      "start": 0.728,
+      "end": 13.716,
+      "text": "At this moment, the whole soul of the old man seemed centered in his eyes, which became bloodshot. The veins of the throat swelled. His cheeks and temples became purple as though he was struck with epilepsy. Nothing was wanting to complete this, but the utterance of a cry.",
+      "speaker_label": "SPEAKER_03",
+      "identified_speaker": "Alice",
+      "similarity_score": 0.9357955716948966
+    },
+    {
+      "start": 21.5,
+      "end": 22.621,
+      "text": "But this is a fallacy.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.760276510599339
+    },
+    {
+      "start": 24.162,
+      "end": 26.383,
+      "text": "The wandering singer approaches them with his loot.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.8124705532394687
+    },
+    {
+      "start": 102.635,
+      "end": 107.837,
+      "text": "Oh, you rave, sir!\" exclaimed Villefort, in vain, endeavoring to escape the net in which he was taken.",
+      "speaker_label": "SPEAKER_03",
+      "identified_speaker": "Alice",
+      "similarity_score": 0.9837900104303776
+    },
+    {
+      "start": 118.861,
+      "end": 121.101,
+      "text": "Lady, lady, my rose white lady.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.8915989836802628
+    },
+    {
+      "start": 121.722,
+      "end": 123.602,
+      "text": "But will you not hear around a lady?",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.8866845988014206
+    },
+    {
+      "start": 149.487,
+      "end": 151.468,
+      "text": "The old man's eyes remain fixed on the door.",
+      "speaker_label": "SPEAKER_03",
+      "identified_speaker": "Alice",
+      "similarity_score": 0.8625346248753856
+    },
+    {
+      "start": 196.05,
+      "end": 200.152,
+      "text": "Oh, if you play us a roundel singer, how can that harm the Emperor's daughter?",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.9080719075957606
+    },
+    {
+      "start": 201.713,
+      "end": 206.596,
+      "text": "She would not speak that we danced o'heak with her thoughts a thousand leagues over the water.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.8479855345720176
+    },
+    {
+      "start": 207.477,
+      "end": 209.518,
+      "text": "Singer, singer, wandering singer.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.7702351085466633
+    },
+    {
+      "start": 210.118,
+      "end": 211.519,
+      "text": "Oh, my honey sweet singer.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.7578446200788624
+    },
+    {
+      "start": 213.38,
+      "end": 214.241,
+      "text": "The wandering singer.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.8101292031532652
+    },
+    {
+      "start": 215.835,
+      "end": 219.656,
+      "text": "But I did once have the luck to hear and see the lady played an entirety.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.8827865945800084
+    },
+    {
+      "start": 220.556,
+      "end": 224.898,
+      "text": "The children had been granted leave to play just one more game before bedtime.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.8880622336220266
+    },
+    {
+      "start": 225.758,
+      "end": 229.679,
+      "text": "And of course they chose the longest and played it without missing a syllable.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.9135859359027736
+    },
+    {
+      "start": 231.239,
+      "end": 232.12,
+      "text": "The wandering singer.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.7867952734822624
+    },
+    {
+      "start": 283.413,
+      "end": 286.575,
+      "text": "Morrell suffered an exclamation of horror and surprised to escape him.",
+      "speaker_label": "SPEAKER_03",
+      "identified_speaker": "Alice",
+      "similarity_score": 0.8540296557598025
+    },
+    {
+      "start": 287.655,
+      "end": 292.418,
+      "text": "I'll play for you now, need the apple bow, and you shall dream on the lawn so shady.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.8824976992089383
+    },
+    {
+      "start": 293.138,
+      "end": 297.341,
+      "text": "Lady, lady, my fair lady, oh, my apple gold lady.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.8675103626348193
+    },
+    {
+      "start": 298.901,
+      "end": 301.523,
+      "text": "Once more, the singer plays in the lady's dance.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.8426293358264162
+    },
+    {
+      "start": 302.422,
+      "end": 305.463,
+      "text": "But one by one, they fall asleep to the drowsy music.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.8798348857760683
+    },
+    {
+      "start": 306.203,
+      "end": 311.245,
+      "text": "And then the singer steps into the ring and unlocks the tower and kisses the Emperor's daughter.",
+      "speaker_label": "SPEAKER_00",
+      "identified_speaker": "Bob",
+      "similarity_score": 0.8866559249165791
+    },
+    {
+      "start": 335.716,
+      "end": 339.9,
+      "text": "But he stopped on the landing. He had not the courage to again visit the death chamber.",
+      "speaker_label": "SPEAKER_03",
+      "identified_speaker": "Alice",
+      "similarity_score": 0.8953849499122912
+    },
+    {
+      "start": 340.921,
+      "end": 342.922,
+      "text": "The two doctors therefore entered the room alone.",
+      "speaker_label": "SPEAKER_03",
+      "identified_speaker": "Alice",
+      "similarity_score": 0.8547516934948179
+    },
+    {
+      "start": 344.404,
+      "end": 356.254,
+      "text": "Davernie, said Willoughfort, be so kind I would see to you as to accompany this gentleman. Here is the key of the door so that you can go in and out as you please. You will bring the priest with you and will oblige me by introducing him into my child's room.",
+      "speaker_label": "SPEAKER_03",
+      "identified_speaker": "Alice",
+      "similarity_score": 0.9492716391566232
+    },
+    {
+      "start": 356.834,
+      "end": 357.675,
+      "text": "Do you wish to see him?",
+      "speaker_label": "SPEAKER_03",
+      "identified_speaker": "Alice",
+      "similarity_score": 0.7756327730704159
+    }
+  ]
+}

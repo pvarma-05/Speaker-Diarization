@@ -1,0 +1,38 @@
+# Virtual environment
+venv/
+
+# Environment variables / secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Model weights
+*.pt
+*.bin
+*.onnx
+
+# Data - Limit large files
+data/dev-clean.tar.gz  # Too big for GitHub (300MB+), download via script instead
+
+# Results and small data - ALLOWED (un-ignored)
+# We want to push results/, registries, and test audio for the demo
+# results/
+# data/*.wav
+# data/speakers/
+# data/benchmark_*
+
+# Old anti-spoofing module
+spoofing/
