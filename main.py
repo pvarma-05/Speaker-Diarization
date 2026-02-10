@@ -18,7 +18,27 @@ from diarization.diarize import diarize_audio, load_diarization_pipeline
 from asr.transcribe import transcribe_audio, load_whisperx_model
 from alignment.align import align_segments, merge_adjacent_segments
 from embeddings.speaker_id import identify_speakers_in_segments
-from spoofing.spoof_check import check_spoofing_batch
+# Anti-spoofing module available but not used in default pipeline
+# from spoofing.spoof_check import check_spoofing_batch
+
+
+def load_hf_token():
+    """Load HuggingFace token from .env file or environment variable."""
+    # Check environment variable first
+    token = os.environ.get('HF_TOKEN')
+    if token:
+        return token
+    # Try loading from .env file in project root
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+    if os.path.exists(env_path):
+        with open(env_path) as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith('HF_TOKEN='):
+                    token = line.split('=', 1)[1].strip()
+                    os.environ['HF_TOKEN'] = token  # Set for downstream libraries
+                    return token
+    return None
 
 
 def format_final_output(segments: List[Dict]) -> str:
@@ -38,20 +58,20 @@ def format_final_output(segments: List[Dict]) -> str:
         speaker = seg.get('identified_speaker', seg.get('speaker_label', 'UNKNOWN'))
         text = seg.get('text', '')
         
-        # Get spoofing status
-        spoof_check = seg.get('spoof_check', {})
-        is_genuine = spoof_check.get('is_genuine', True)
-        spoof_flag = "✓" if is_genuine else "✗"
+        # Show authorization status
+        similarity = seg.get('similarity_score', 0.0)
+        is_authorized = speaker != 'UNKNOWN'
+        auth_flag = "✓" if is_authorized else "✗ UNAUTHORIZED"
         
-        output.append(f"[{start:.2f}-{end:.2f}] {speaker}: {text} ({spoof_flag})")
+        output.append(f"[{start:.2f}-{end:.2f}] {speaker}: {text} ({auth_flag} {similarity:.0%})")
     
     return "\n".join(output)
 
 
 def run_pipeline(audio_file: str, output_json: str = None, 
                 hf_token: str = None, whisper_model: str = "base",
-                speaker_threshold: float = 0.7, merge_gap: float = 0.5,
-                enable_spoof_check: bool = True) -> Dict:
+                speaker_threshold: float = 0.75, merge_gap: float = 0.5,
+                enable_auth_filter: bool = True) -> Dict:
     """
     Run the complete S-O-EEND-SDR pipeline.
     
@@ -62,7 +82,7 @@ def run_pipeline(audio_file: str, output_json: str = None,
         whisper_model: Whisper model size (tiny, base, small, medium, large)
         speaker_threshold: Similarity threshold for speaker identification
         merge_gap: Maximum gap in seconds to merge adjacent segments
-        enable_spoof_check: Whether to run spoofing detection
+        enable_auth_filter: Whether to filter out unauthorized speakers
         
     Returns:
         Dictionary with complete pipeline results
@@ -131,20 +151,26 @@ def run_pipeline(audio_file: str, output_json: str = None,
             seg['identified_speaker'] = seg.get('speaker_label', 'UNKNOWN')
             seg['similarity_score'] = 0.0
     
-    # Step 6: Anti-Spoofing (Optional)
-    if enable_spoof_check:
-        print("Step 6: Anti-spoofing detection...")
-        try:
-            identified_segments = check_spoofing_batch(identified_segments, audio_file)
-            print(f"  ✓ Checked {len(identified_segments)} segments (placeholder)\n")
-        except Exception as e:
-            print(f"  ✗ Warning: Spoofing check failed: {str(e)}")
-            print("  Continuing without spoofing detection...")
-            for seg in identified_segments:
-                seg['spoof_check'] = {'is_genuine': True, 'confidence': 1.0, 'method': 'skipped'}
+    # Step 6: Speaker Authorization Filter
+    if enable_auth_filter:
+        print("Step 6: Speaker authorization filter...")
+        total_segments = len(identified_segments)
+        authorized_segments = [s for s in identified_segments if s.get('identified_speaker', 'UNKNOWN') != 'UNKNOWN']
+        unauthorized_count = total_segments - len(authorized_segments)
+        
+        if unauthorized_count > 0:
+            # Collect unique unauthorized speaker labels for reporting
+            unauthorized_labels = set(
+                s.get('speaker_label', '?') for s in identified_segments
+                if s.get('identified_speaker', 'UNKNOWN') == 'UNKNOWN'
+            )
+            print(f"  ✓ Authorized {len(authorized_segments)}/{total_segments} segments")
+            print(f"  ✗ Filtered out {unauthorized_count} segments from {len(unauthorized_labels)} unauthorized speaker(s)\n")
+            identified_segments = authorized_segments
+        else:
+            print(f"  ✓ All {total_segments} segments from authorized speakers\n")
     else:
-        for seg in identified_segments:
-            seg['spoof_check'] = {'is_genuine': True, 'confidence': 1.0, 'method': 'disabled'}
+        print("Step 6: Authorization filter disabled — all speakers included.\n")
     
     # Step 7: Final Output
     print("=" * 60)
@@ -179,7 +205,7 @@ Examples:
   python main.py audio.wav
   python main.py audio.wav --output results.json
   python main.py audio.wav --whisper-model large --speaker-threshold 0.8
-  python main.py audio.wav --hf-token YOUR_TOKEN --no-spoof-check
+  python main.py audio.wav --hf-token YOUR_TOKEN --no-auth-filter
         """
     )
     
@@ -191,12 +217,12 @@ Examples:
     parser.add_argument('--whisper-model', type=str, default='base',
                        choices=['tiny', 'base', 'small', 'medium', 'large'],
                        help='Whisper model size (default: base)')
-    parser.add_argument('--speaker-threshold', type=float, default=0.7,
-                       help='Similarity threshold for speaker identification (default: 0.7)')
+    parser.add_argument('--speaker-threshold', type=float, default=0.75,
+                       help='Similarity threshold for speaker identification (default: 0.75)')
     parser.add_argument('--merge-gap', type=float, default=0.5,
                        help='Maximum gap in seconds to merge adjacent segments (default: 0.5)')
-    parser.add_argument('--no-spoof-check', action='store_true',
-                       help='Disable spoofing detection')
+    parser.add_argument('--no-auth-filter', action='store_true',
+                        help='Disable speaker authorization filter (include all speakers)')
     
     args = parser.parse_args()
     
@@ -210,11 +236,11 @@ Examples:
         run_pipeline(
             audio_file=args.audio_file,
             output_json=args.output,
-            hf_token=args.hf_token,
+            hf_token=args.hf_token or load_hf_token(),
             whisper_model=args.whisper_model,
             speaker_threshold=args.speaker_threshold,
             merge_gap=args.merge_gap,
-            enable_spoof_check=not args.no_spoof_check
+            enable_auth_filter=not args.no_auth_filter
         )
     except KeyboardInterrupt:
         print("\n\nPipeline interrupted by user.")

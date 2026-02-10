@@ -1,0 +1,38 @@
+# Virtual environment
+venv/
+
+# Environment variables / secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Model weights
+*.pt
+*.bin
+*.onnx
+
+# Data - large downloads & generated test audio
+data/dev-clean.tar.gz
+data/*.wav
+data/speakers/
+data/benchmark_speakers/
+data/benchmark_enhanced/
+
+# Results - all generated output (keep in results/ locally)
+results/
+
+# Old anti-spoofing module
+spoofing/

@@ -5,7 +5,7 @@ A modular, CLI-based pipeline for speaker-attributed transcription that answers:
 - **When did they speak?** (Timestamped segments)
 - **What did they say?** (Automatic speech recognition)
 - **Is the speaker known or UNKNOWN?** (Open-set speaker identification)
-- **Is the voice genuine or spoofed?** (Anti-spoofing detection - placeholder)
+- **Is the voice genuine or spoofed?** (Anti-spoofing detection via AASIST-L)
 
 ## Overview
 
@@ -14,7 +14,7 @@ This project implements a complete speaker diarization and recognition system us
 - **ASR**: WhisperX for transcription with word-level timestamps
 - **Alignment**: Manual Python logic to fuse diarization and ASR outputs
 - **Open-Set Speaker ID**: Resemblyzer embeddings with cosine similarity matching
-- **Anti-Spoofing**: Placeholder module for future implementation
+- **Anti-Spoofing**: AASIST-L (85k params, pretrained on ASVspoof 2019 LA) for deepfake/TTS detection
 
 ## Project Structure
 
@@ -32,7 +32,9 @@ sdr-project/
 ├── embeddings/
 │   └── speaker_id.py              # Open-set speaker identification
 ├── spoofing/
-│   └── spoof_check.py             # Anti-spoofing detection (placeholder)
+│   ├── aasist_model.py             # AASIST-L model architecture (vendored)
+│   ├── spoof_check.py             # Anti-spoofing detection (AASIST-L)
+│   └── weights/AASIST-L.pth       # Pretrained weights (~426KB)
 ├── utils/
 │   └── audio_utils.py             # Audio preprocessing utilities
 ├── main.py                        # CLI entry point

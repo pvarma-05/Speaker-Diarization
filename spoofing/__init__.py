@@ -1,1 +1,0 @@
-"""Anti-spoofing detection module."""
