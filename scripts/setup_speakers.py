@@ -23,6 +23,9 @@ from embeddings.speaker_id import (
 SPEAKERS_DIR = os.path.join(PROJECT_ROOT, "data", "speakers")
 REGISTRY_PATH = os.path.join(PROJECT_ROOT, "data", "speaker_registry.json")
 
+# Only these speakers are authorized; others (e.g. Diana) are kept unauthorized for demo purposes
+AUTHORIZED_SPEAKERS = {"Alice", "Bob", "Charlie"}
+
 
 def setup_speakers():
     """Enroll all speakers found in data/speakers/*/enrollment.wav"""
@@ -36,15 +39,22 @@ def setup_speakers():
         print(f"  Run scripts/setup_test_data.py first to download audio.")
         sys.exit(1)
     
-    # Find all speaker directories
+    # Find authorized speaker directories only
     speaker_dirs = [d for d in os.listdir(SPEAKERS_DIR) 
-                    if os.path.isdir(os.path.join(SPEAKERS_DIR, d))]
+                    if os.path.isdir(os.path.join(SPEAKERS_DIR, d))
+                    and d in AUTHORIZED_SPEAKERS]
+    
+    skipped = [d for d in os.listdir(SPEAKERS_DIR)
+               if os.path.isdir(os.path.join(SPEAKERS_DIR, d))
+               and d not in AUTHORIZED_SPEAKERS]
     
     if not speaker_dirs:
         print("  No speaker directories found.")
         sys.exit(1)
     
-    print(f"  Found {len(speaker_dirs)} speakers: {', '.join(speaker_dirs)}")
+    print(f"  Found {len(speaker_dirs)} authorized speakers: {', '.join(sorted(speaker_dirs))}")
+    if skipped:
+        print(f"  Skipping {len(skipped)} unauthorized: {', '.join(sorted(skipped))}")
     print()
     
     # Clear existing registry to start fresh
