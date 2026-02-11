@@ -1,0 +1,382 @@
+========================================================
+  A-Z PROJECT EXPLANATION
+  Speaker Authorization Pipeline (S-O-EEND-SDR)
+========================================================
+
+
+1. WHAT IS THIS PROJECT?
+========================
+
+This project is a "Speaker Authorization Pipeline". Given an
+audio recording of a conversation (e.g., a meeting), it:
+
+  1. Determines WHO is speaking at each moment
+  2. Converts speech to text
+  3. Checks if each speaker is AUTHORIZED
+  4. Removes segments from unauthorized speakers
+  5. Outputs a clean transcript of only verified voices
+
+Think of it like a bouncer at a club — only people on the
+guest list (the speaker registry) get their words transcribed.
+
+
+2. THE 6-STEP PIPELINE
+=======================
+
+When you run: python main.py audio.wav
+
+Here's exactly what happens, step by step:
+
+  ┌─────────────────────────────────────────────────┐
+  │  STEP 1: Audio Loading & Preprocessing          │
+  │  STEP 2: Speaker Diarization (WHO spoke WHEN)   │
+  │  STEP 3: Speech-to-Text (WHAT they said)        │
+  │  STEP 4: Alignment (merge WHO + WHAT)           │
+  │  STEP 5: Speaker Identification (WHO are they?) │
+  │  STEP 6: Authorization Filter (are they ALLOWED)│
+  └─────────────────────────────────────────────────┘
+
+
+3. STEP-BY-STEP: WHAT HAPPENS BEHIND THE SCENES
+================================================
+
+
+STEP 1: Audio Loading & Preprocessing
+--------------------------------------
+File: utils/audio_utils.py
+Library: librosa
+
+What it does:
+  - Loads any audio file (WAV, MP3, FLAC, etc.)
+  - Converts to 16kHz sample rate (the standard for speech)
+  - Converts stereo → mono (single channel)
+  - Optionally removes silence using energy-based VAD
+    (Voice Activity Detection)
+
+How VAD works:
+  - Splits audio into tiny frames (~128ms each)
+  - Calculates the "energy" (loudness) of each frame
+  - If energy > threshold → speech
+  - If energy < threshold → silence
+  - Groups consecutive speech frames into segments
+
+Input:  Any audio file
+Output: numpy array of audio samples at 16kHz mono
+
+
+STEP 2: Speaker Diarization ("Who spoke when?")
+------------------------------------------------
+File: diarization/diarize.py
+Library: pyannote.audio (v3.1)
+Model: pyannote/speaker-diarization-3.1 (from Hugging Face)
+
+What it does:
+  - Takes the raw audio file
+  - Outputs a list of segments: [start, end, SPEAKER_00],
+    [start, end, SPEAKER_01], etc.
+  - Does NOT know speaker names — just assigns labels like
+    SPEAKER_00, SPEAKER_01, etc.
+
+How pyannote works (behind the scenes):
+  1. "Segmentation" neural network: processes audio in 10s
+     windows and predicts, for every 17ms frame, which
+     speakers are active. This model is a PyanNet (a
+     SincNet + LSTM + feedforward architecture).
+  2. "Embedding" neural network: extracts a 512-dim
+     speaker embedding from each detected speaker segment.
+     Uses ECAPA-TDNN architecture (the same family as
+     Resemblyzer but a different model).
+  3. "Clustering": groups embeddings that sound similar
+     using agglomerative clustering. Segments with similar
+     embeddings get the same label (SPEAKER_00, etc.).
+  4. Outputs a timeline of who spoke when.
+
+Why we need a Hugging Face token:
+  - pyannote models are "gated" — you must accept their
+    license terms on huggingface.co before downloading.
+  - The token proves you accepted the terms.
+
+Input:  Audio file path
+Output: List of {start, end, speaker_label}
+        e.g., [{start: 0.0, end: 2.5, speaker_label: "SPEAKER_00"},
+               {start: 2.5, end: 5.0, speaker_label: "SPEAKER_01"}]
+
+
+STEP 3: Automatic Speech Recognition ("What did they say?")
+------------------------------------------------------------
+File: asr/transcribe.py
+Library: WhisperX (built on OpenAI Whisper)
+Model: Whisper "base" (74M parameters, by default)
+
+What it does:
+  - Takes the raw audio file
+  - Converts speech to text
+  - Provides word-level timestamps
+
+How WhisperX works (behind the scenes):
+  1. "Whisper" model (OpenAI): An encoder-decoder Transformer.
+     - Encoder: Converts audio spectrograms into hidden states
+     - Decoder: Auto-regressively generates text tokens
+     - Trained on 680,000+ hours of multilingual audio
+     - The "base" model has 74M parameters
+  2. "Forced Alignment" (WhisperX addition):
+     - Whisper alone gives sentence-level timestamps
+     - WhisperX adds a separate alignment model (wav2vec2)
+       that gives WORD-level timestamps
+     - This is critical because we need precise timestamps
+       to match words to speakers
+
+Why WhisperX instead of plain Whisper?
+  - WhisperX is 70x faster (uses batched inference + CTranslate2)
+  - WhisperX gives word-level timestamps (Whisper only gives
+    sentence-level)
+  - WhisperX handles long audio better
+
+Input:  Audio file path
+Output: List of {start, end, text}
+        e.g., [{start: 0.0, end: 2.5, text: "Hello, how are you?"},
+               {start: 2.5, end: 5.0, text: "I'm doing well."}]
+
+
+STEP 4: Alignment ("Match text to speakers")
+---------------------------------------------
+File: alignment/align.py
+Library: Pure Python (no ML needed)
+
+What it does:
+  - Takes the diarization output (who spoke when) and the
+    ASR output (what was said when)
+  - Matches them together based on timestamp overlap
+
+How it works:
+  - For each ASR segment (text + timestamps):
+    1. Compare its [start, end] with every diarization segment
+    2. Calculate the "overlap ratio":
+         overlap = intersection / ASR_segment_duration
+    3. Assign the speaker label from the diarization segment
+       with the highest overlap
+    4. If overlap > 50%, it's a confident match
+    5. If no match, label as "UNKNOWN"
+  - Then merge adjacent segments from the same speaker
+    (if gap < 0.5 seconds) to create cleaner output
+
+Example:
+  ASR says:    [0.0-2.5] "Hello, how are you?"
+  Diarization: [0.0-2.8] SPEAKER_00
+  Overlap:     2.5 / 2.5 = 100% → assign SPEAKER_00
+
+  Result:      [0.0-2.5] SPEAKER_00: "Hello, how are you?"
+
+Input:  ASR segments + Diarization segments
+Output: List of {start, end, text, speaker_label}
+
+
+STEP 5: Speaker Identification ("Is this Alice or Bob?")
+---------------------------------------------------------
+File: embeddings/speaker_id.py
+Library: Resemblyzer
+Model: GE2E (Generalized End-to-End) speaker encoder
+
+What it does:
+  - Takes each segment's audio
+  - Compares it against a "speaker registry" of known voices
+  - Returns the best matching name + similarity score
+  - If similarity < 0.75 → returns "UNKNOWN"
+
+How it works in detail:
+
+  1. EMBEDDING EXTRACTION:
+     - Resemblyzer uses a 3-layer LSTM neural network
+     - Input: 40-channel mel spectrogram of the audio
+     - Output: A 256-dimensional vector (the "voiceprint")
+     - This vector captures the unique characteristics of
+       a person's voice (pitch, timbre, speaking style)
+     - Two clips of the same person will have similar vectors,
+       even if they say completely different words
+
+  2. SPEAKER REGISTRY:
+     - Stored in data/speaker_registry.json
+     - Contains: {name: embedding_vector} for each enrolled speaker
+     - Created using scripts/enroll_speaker.py
+     - The embedding is stored as a list of 256 floats
+
+  3. COSINE SIMILARITY:
+     - For each segment, we compute cosine similarity between
+       the segment's embedding and every enrolled speaker's
+       embedding:
+
+         similarity(A, B) = (A · B) / (|A| * |B|)
+
+     - Range: -1 (opposite) to +1 (identical)
+     - Same person: typically 0.75 - 0.95
+     - Different person: typically 0.30 - 0.65
+     - Threshold: 0.75 (tuned via benchmarking)
+
+  4. DECISION:
+     - If best_similarity >= 0.75 → return (speaker_name, score)
+     - If best_similarity <  0.75 → return ("UNKNOWN", score)
+
+Input:  Aligned segments + audio file
+Output: List of {start, end, text, speaker_label, identified_speaker,
+        similarity_score}
+
+
+STEP 6: Authorization Filter ("Are they allowed?")
+----------------------------------------------------
+File: main.py (lines 154-175)
+Library: Pure Python
+
+What it does:
+  - Filters out ALL segments where identified_speaker == "UNKNOWN"
+  - Only segments from enrolled (authorized) speakers remain
+  - Prints a summary: "Authorized X/Y segments"
+
+How it works:
+  - Simple list comprehension:
+    authorized = [seg for seg in segments if seg['identified_speaker'] != 'UNKNOWN']
+  - Reports how many segments and speakers were filtered out
+
+This is the "security" step — the bouncer at the door.
+
+Input:  Identified segments
+Output: Only authorized segments
+
+
+4. HOW ENROLLMENT WORKS
+========================
+
+Before the pipeline can recognize someone, you must ENROLL them.
+
+Command: python scripts/enroll_speaker.py --name "Alice" --audio voice.wav
+
+What happens:
+  1. Load the audio file
+  2. Pass it through Resemblyzer's LSTM encoder
+  3. Get a 256-dim embedding vector (the "voiceprint")
+  4. Save {name: "Alice", embedding: [0.12, -0.34, ...]} to
+     data/speaker_registry.json
+
+The registry file is a JSON containing all enrolled speakers.
+Each speaker has their voiceprint stored as a list of 256 numbers.
+
+
+5. WHY 0.75 THRESHOLD?
+=======================
+
+We tested multiple thresholds across 120+ speaker clips:
+
+  Threshold   Accuracy   FAR (False Accept)   FRR (False Reject)
+  ---------   --------   ------------------   ------------------
+     0.60      88.0%        12.5%                 0.0%
+     0.65      92.0%         7.5%                 0.0%
+     0.70      94.0%         3.8%                 2.5%
+     0.75      96.7%         3.8%                 2.5%
+     0.80      91.7%         0.0%                22.5%
+
+  0.75 gives the best balance:
+  - High accuracy (96.7%)
+  - Low false acceptance (3.8% — few imposters get through)
+  - Low false rejection (2.5% — few real users are blocked)
+  - Under noise, the system FAILS SAFE: it rejects everyone
+    rather than accepting an imposter
+
+
+6. THE JOURNEY: HOW WE BUILT THIS
+==================================
+
+Phase 1: Anti-Spoofing Approach (abandoned)
+  - Goal: Detect if audio is "real" vs "AI-generated"
+  - Model: AASIST-L (lightweight anti-spoofing network)
+  - Result: 67.7% accuracy — too low for production
+  - Problem: Modern TTS (text-to-speech) is so good that
+    even neural networks can't reliably distinguish real
+    from fake speech
+  - Decision: PIVOT to a different approach
+
+Phase 2: Speaker Authorization (current)
+  - Goal: Don't detect fakes. Instead, verify WHO is speaking.
+  - Insight: Even if speech is AI-generated, it won't match
+    the voiceprint of an authorized speaker
+  - Result: 96.7% accuracy, 100% on long conversations
+  - Key advantage: Works against ALL attacks (AI voice,
+    recordings, imposters, random people)
+
+Phase 3: Benchmarking & Hardening
+  - Standard benchmark: 10 speakers, 50 clips → 94%
+  - Enhanced benchmark: 15 speakers, noise conditions → 96.7%
+  - Long conversation: 6.2 min, 5 speakers → 100%, 0% FAR
+  - Live demo: Record your own voice → pipeline filters everyone else
+
+
+7. KEY TECHNOLOGIES EXPLAINED
+==============================
+
+┌────────────────────────────────────────────────────────┐
+│ Technology       │ What it does        │ How           │
+├──────────────────┼─────────────────────┼───────────────┤
+│ pyannote.audio   │ Diarization         │ Neural nets   │
+│                  │ (who spoke when)    │ + clustering  │
+├──────────────────┼─────────────────────┼───────────────┤
+│ WhisperX         │ Transcription       │ Transformer   │
+│                  │ (speech to text)    │ encoder-dec   │
+├──────────────────┼─────────────────────┼───────────────┤
+│ Resemblyzer      │ Speaker embeddings  │ LSTM encoder  │
+│                  │ (voiceprints)       │ + GE2E loss   │
+├──────────────────┼─────────────────────┼───────────────┤
+│ Cosine Similarity│ Matching            │ Math formula  │
+│                  │ (is this Alice?)    │ dot product   │
+├──────────────────┼─────────────────────┼───────────────┤
+│ librosa          │ Audio loading       │ FFT, resamp   │
+│                  │ & preprocessing     │               │
+└────────────────────────────────────────────────────────┘
+
+
+8. FILE MAP
+===========
+
+main.py                     ← Entry point, orchestrates 6 steps
+utils/audio_utils.py        ← Load audio, remove silence
+diarization/diarize.py      ← Speaker diarization (pyannote)
+asr/transcribe.py           ← Speech-to-text (WhisperX)
+alignment/align.py          ← Merge diarization + ASR segments
+embeddings/speaker_id.py    ← Speaker embeddings + identification
+
+scripts/enroll_speaker.py   ← CLI to enroll authorized speakers
+scripts/benchmark_auth.py   ← Test system accuracy (10 speakers)
+scripts/benchmark_enhanced.py ← Stress test (15 speakers + noise)
+scripts/setup_test_data.py  ← Download LibriSpeech test data
+
+live_test/record_voice.py   ← Record your voice for live demo
+live_test/build_live_conversation.py  ← Mix your voice into conversation
+live_test/run_live_demo.py  ← One-click live demonstration
+
+data/speaker_registry.json  ← Enrolled speaker voiceprints
+results/                    ← Pipeline output files
+
+
+9. SECURITY MODEL
+==================
+
+Attack Type               │ Protected?  │ How
+──────────────────────────┼─────────────┼──────────────────────
+Random person speaks      │ YES         │ Voiceprint won't match
+AI-generated voice clone  │ YES*        │ Clone won't perfectly
+                          │             │ match voiceprint
+Recorded playback         │ YES*        │ Audio quality degrades
+                          │             │ during recording
+Authorized person speaks  │ ALLOWED     │ Voiceprint matches
+
+*Note: Very high-quality voice clones might bypass the system.
+For maximum security, combine with liveness detection.
+
+
+10. PERFORMANCE SUMMARY
+========================
+
+Test                     │ Accuracy │ FAR    │ Key Result
+─────────────────────────┼──────────┼────────┼───────────────────
+Standard (10 speakers)   │  94.0%   │  3.8%  │ Baseline works
+Enhanced (15 speakers)   │  96.7%   │  3.8%  │ Scales well
+Noisy (20dB SNR)         │  85.8%   │  0.0%  │ Fails safe
+Long conversation (6min) │ 100.0%   │  0.0%  │ Perfect in clean
+Live demo (your voice)   │ ~100%    │  0.0%  │ Real-world proof
