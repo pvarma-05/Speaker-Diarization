@@ -26,14 +26,15 @@ SETUP (Do this BEFORE demo day)
 
    $env:HF_TOKEN = "your_token_here"
 
-5. Make sure the speaker registry has enrolled speakers:
+5. **CRITICAL — Re-enroll speakers on THIS machine:**
 
-   python scripts/enroll_speaker.py --list
+   Voiceprint embeddings must be computed locally.
+   The pre-built registry won't work on a different machine.
 
-   You should see: Alice, Bob, Charlie (the 3 authorized speakers).
-   If not, run the setup script first:
+   python scripts/setup_speakers.py
 
-   python scripts/setup_test_data.py
+   You should see: Alice, Bob, Charlie enrolled successfully.
+   This only needs to be done ONCE per machine.
 
 
 LIVE DEMONSTRATION STEPS

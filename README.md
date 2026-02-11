@@ -52,6 +52,13 @@ This pipeline uses the `pyannote/speaker-diarization-3.1` model, which is gated.
 2. Get your Access Token from [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
 3. Set it as an environment variable or pass it via CLI.
 
+### 4. **CRITICAL: Enroll Speakers Locally**
+Voiceprint embeddings must be computed on YOUR machine. After cloning, run:
+```bash
+python scripts/setup_speakers.py
+```
+This enrolls Alice, Bob, and Charlie from the included audio samples. Only needed once per machine.
+
 ## Usage
 
 ### 1. Enroll an Authorized Speaker
@@ -59,7 +66,7 @@ Before the system can recognize "Alice", you must enroll her voice.
 **Requirements:** 3-5 clear audio clips of the speaker.
 
 ```bash
-python scripts/enroll_speaker.py --name "Alice" --audio-folder path/to/alice_clips/
+python scripts/enroll_speaker.py --name "Alice" --audio path/to/alice.wav
 ```
 
 ### 2. Run the Pipeline
