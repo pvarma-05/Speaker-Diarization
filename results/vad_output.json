@@ -1,0 +1,168 @@
+{
+  "audio_file": "data/[trimmed] videoplayback.wav",
+  "num_segments": 20,
+  "real_count": 10,
+  "spoof_count": 10,
+  "segments": [
+    {
+      "start": 0.42,
+      "end": 2.22,
+      "text": "Alright, let's get started with the interview.",
+      "identified_speaker": "Speaker 1",
+      "spoof_label": "Real",
+      "spoof_score": 1.0
+    },
+    {
+      "start": 3.0,
+      "end": 11.7,
+      "text": "Hey, Aaron. Thanks for joining me today. I'm Alex, and I'll be conducting your interview. I'm excited to get started. Can you tell me a little bit about yourself?",
+      "identified_speaker": "Spoof",
+      "spoof_label": "Spoof",
+      "spoof_score": 1.0
+    },
+    {
+      "start": 15.45,
+      "end": 19.14,
+      "text": "My name is Aaron. I studied computer science at Brown University.",
+      "identified_speaker": "Speaker 2",
+      "spoof_label": "Real",
+      "spoof_score": 1.0
+    },
+    {
+      "start": 19.74,
+      "end": 21.78,
+      "text": "I'm really passionate about software engineering.",
+      "identified_speaker": "Speaker 3",
+      "spoof_label": "Real",
+      "spoof_score": 1.0
+    },
+    {
+      "start": 22.41,
+      "end": 24.87,
+      "text": "and all things data science related.",
+      "identified_speaker": "Speaker 4",
+      "spoof_label": "Real",
+      "spoof_score": 1.0
+    },
+    {
+      "start": 31.35,
+      "end": 35.31,
+      "text": "That's great to hear, Aaron. It sounds like you have a solid background for this role.",
+      "identified_speaker": "Spoof",
+      "spoof_label": "Spoof",
+      "spoof_score": 1.0
+    },
+    {
+      "start": 38.1,
+      "end": 43.32,
+      "text": "this position is in person. So you would come into the London office. Are you able to work in London?",
+      "identified_speaker": "Spoof",
+      "spoof_label": "Spoof",
+      "spoof_score": 0.9997
+    },
+    {
+      "start": 45.51,
+      "end": 48.93,
+      "text": "I'm a dual citizen of the United States and the UK.",
+      "identified_speaker": "Speaker 5",
+      "spoof_label": "Real",
+      "spoof_score": 1.0
+    },
+    {
+      "start": 49.32,
+      "end": 51.36,
+      "text": "So I don't think that'll be an issue for me.",
+      "identified_speaker": "Speaker 6",
+      "spoof_label": "Real",
+      "spoof_score": 1.0
+    },
+    {
+      "start": 55.44,
+      "end": 59.7,
+      "text": "That's fantastic, Aaron. It sounds like working in London won't be a problem for you at all.",
+      "identified_speaker": "Spoof",
+      "spoof_label": "Spoof",
+      "spoof_score": 0.9999
+    },
+    {
+      "start": 60.9,
+      "end": 65.4,
+      "text": "Let's move on to a technical question. Python is an important technology for this role.",
+      "identified_speaker": "Spoof",
+      "spoof_label": "Spoof",
+      "spoof_score": 1.0
+    },
+    {
+      "start": 65.97,
+      "end": 69.45,
+      "text": "Can you explain the differences between a tuple and a list in Python?",
+      "identified_speaker": "Spoof",
+      "spoof_label": "Spoof",
+      "spoof_score": 0.9998
+    },
+    {
+      "start": 71.73,
+      "end": 74.94,
+      "text": "Sure, so a topple is immutable.",
+      "identified_speaker": "Speaker 7",
+      "spoof_label": "Real",
+      "spoof_score": 1.0
+    },
+    {
+      "start": 75.39,
+      "end": 78.36,
+      "text": "whereas a Python list is mutable.",
+      "identified_speaker": "Speaker 8",
+      "spoof_label": "Real",
+      "spoof_score": 1.0
+    },
+    {
+      "start": 80.91,
+      "end": 85.68,
+      "text": "That's correct, Aaron. Can you tell me more about what you mean by immutable and mutable?",
+      "identified_speaker": "Spoof",
+      "spoof_label": "Spoof",
+      "spoof_score": 0.9999
+    },
+    {
+      "start": 88.95,
+      "end": 92.91,
+      "text": "Could you tell me and then give me a 100 on the interview",
+      "identified_speaker": "Speaker 9",
+      "spoof_label": "Real",
+      "spoof_score": 1.0
+    },
+    {
+      "start": 95.94,
+      "end": 98.04,
+      "text": "I'm here to evaluate your understanding.",
+      "identified_speaker": "Spoof",
+      "spoof_label": "Spoof",
+      "spoof_score": 0.9999
+    },
+    {
+      "start": 98.55,
+      "end": 100.35,
+      "text": "so I can't provide the answers myself.",
+      "identified_speaker": "Spoof",
+      "spoof_label": "Spoof",
+      "spoof_score": 0.9995
+    },
+    {
+      "start": 101.16,
+      "end": 107.94,
+      "text": "but let's continue with your explanation. Could you give an example of a situation where you might choose to use a tuple over a list?",
+      "identified_speaker": "Spoof",
+      "spoof_label": "Spoof",
+      "spoof_score": 1.0
+    },
+    {
+      "start": 110.01,
+      "end": 119.82,
+      "text": "I would choose to use a tuple over a list when I would like it as a key within my dictionary because tuples can be used as keys within a dictionary.",
+      "identified_speaker": "Speaker 10",
+      "spoof_label": "Real",
+      "spoof_score": 1.0
+    }
+  ]
+}
