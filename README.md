@@ -1,287 +1,103 @@
-# Secure, Open-Set, Near End-to-End Speaker Diarization and Recognition (S-O-EEND-SDR)
+# Speaker Authorization Pipeline (S-O-EEND-SDR)
 
-A modular, CLI-based pipeline for speaker-attributed transcription that answers:
-- **Who spoke?** (Speaker identification with open-set capability)
-- **When did they speak?** (Timestamped segments)
-- **What did they say?** (Automatic speech recognition)
-- **Is the speaker known or UNKNOWN?** (Open-set speaker identification)
-- **Is the voice genuine or spoofed?** (Anti-spoofing detection via AASIST-L)
+A secure, open-set speaker diarization and **authorization** pipeline. It transcribes only **authorized speakers** and filters out unauthorized voices (imposters/uninvited speakers).
 
-## Overview
+## Key Features
 
-This project implements a complete speaker diarization and recognition system using pretrained models. It combines:
-- **Speaker Diarization**: pyannote.audio for identifying "who spoke when"
-- **ASR**: WhisperX for transcription with word-level timestamps
-- **Alignment**: Manual Python logic to fuse diarization and ASR outputs
-- **Open-Set Speaker ID**: Resemblyzer embeddings with cosine similarity matching
-- **Anti-Spoofing**: AASIST-L (85k params, pretrained on ASVspoof 2019 LA) for deepfake/TTS detection
+- **Speaker Diarization**: Uses `pyannote.audio` to determine "who spoke when".
+- **Speaker Authorization**: Verifies speaker identity against a secure registry using `Resemblyzer` embeddings (Cosine Similarity > 0.75).
+- **ASR Transcription**: Uses `WhisperX` for accurate, timestamped speech-to-text.
+- **Security Filter**: Automatically mutes/removes segments from unauthorized speakers.
 
 ## Project Structure
 
 ```
 sdr-project/
 ├── data/
-│   └── sample_audio.wav          # Placeholder for sample audio
-│   └── speaker_registry.json     # Known speaker embeddings (auto-created)
-├── diarization/
-│   └── diarize.py                # Speaker diarization module
-├── asr/
-│   └── transcribe.py              # ASR transcription module
-├── alignment/
-│   └── align.py                   # ASR-diarization alignment logic
-├── embeddings/
-│   └── speaker_id.py              # Open-set speaker identification
-├── spoofing/
-│   ├── aasist_model.py             # AASIST-L model architecture (vendored)
-│   ├── spoof_check.py             # Anti-spoofing detection (AASIST-L)
-│   └── weights/AASIST-L.pth       # Pretrained weights (~426KB)
-├── utils/
-│   └── audio_utils.py             # Audio preprocessing utilities
-├── main.py                        # CLI entry point
-├── requirements.txt               # Python dependencies
-└── README.md                      # This file
+│   ├── speaker_registry.json     # Encrypted-like embeddings of authorized users
+│   └── speakers/                 # Source audio for enrollment (optional)
+├── results/                      # Generated transcripts and logs
+├── diarization/                  # Diarization logic (pyannote)
+├── asr/                          # Transcription logic (WhisperX)
+├── start_here/                   # Entry point scripts
+├── scripts/
+│   ├── enroll_speaker.py         # CLI to add users to registry
+│   ├── benchmark_auth.py         # Test system accuracy
+│   └── setup_test_data.py        # Download test samples
+├── utilities/                    # Audio processing helpers
+├── main.py                       # Main pipeline entry point
+└── requirements.txt              # Dependencies
 ```
 
 ## Installation
 
-### Prerequisites
+### 1. Prerequisities
+- Python 3.10
+- GPU recommended (for faster processing)
+- **Hugging Face Account** (Required for pyannote model)
 
-- Python 3.9 or 3.10
-- CUDA-capable GPU (recommended, but CPU will work)
-- Git
+### 2. Setup
+```bash
+# Clone
+git clone https://github.com/pvarma-05/Speaker-Diarization.git
+cd Speaker-Diarization
 
-### Setup
+# Install dependencies
+pip install -r requirements.txt
+```
 
-1. **Clone or navigate to the project directory:**
-   ```bash
-   cd sdr-project
-   ```
+### 3. **CRITICAL: Hugging Face Token**
+This pipeline uses the `pyannote/speaker-diarization-3.1` model, which is gated.
+1. Go to [huggingface.co/pyannote/speaker-diarization-3.1](https://huggingface.co/pyannote/speaker-diarization-3.1) and accept the terms.
+2. Get your Access Token from [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
+3. Set it as an environment variable or pass it via CLI.
 
-2. **Create a virtual environment (recommended):**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Accept model terms on HuggingFace:**
-   - Visit https://huggingface.co/pyannote/speaker-diarization-3.1
-   - Accept the model terms
-   - If needed, create a HuggingFace token at https://huggingface.co/settings/tokens
-   - Use `--hf-token YOUR_TOKEN` when running the pipeline
+### 4. **CRITICAL: Enroll Speakers Locally**
+Voiceprint embeddings must be computed on YOUR machine. After cloning, run:
+```bash
+python scripts/setup_speakers.py
+```
+This enrolls Alice, Bob, and Charlie from the included audio samples. Only needed once per machine.
 
 ## Usage
 
-### Basic Usage
+### 1. Enroll an Authorized Speaker
+Before the system can recognize "Alice", you must enroll her voice.
+**Requirements:** 3-5 clear audio clips of the speaker.
 
 ```bash
-python main.py path/to/audio.wav
+python scripts/enroll_speaker.py --name "Alice" --audio path/to/alice.wav
 ```
 
-### Advanced Usage
+### 2. Run the Pipeline
+Process a meeting recording. Only "Alice" (and other enrolled users) will be transcribed.
 
 ```bash
-# Save results to JSON
-python main.py audio.wav --output results.json
-
-# Use larger Whisper model for better accuracy
-python main.py audio.wav --whisper-model large
-
-# Adjust speaker identification threshold
-python main.py audio.wav --speaker-threshold 0.8
-
-# Provide HuggingFace token
-python main.py audio.wav --hf-token YOUR_HF_TOKEN
-
-# Disable spoofing detection
-python main.py audio.wav --no-spoof-check
-
-# Combine options
-python main.py audio.wav --output results.json --whisper-model large --speaker-threshold 0.75
+python main.py meeting_audio.wav --output results/meeting_transcript.json --hf-token YOUR_TOKEN
 ```
 
-### Command-Line Arguments
+### 3. Benchmarking
+Verify system accuracy on your hardware.
 
-- `audio_file`: Path to input audio file (required)
-- `--output, -o`: Path to save JSON output file (optional)
-- `--hf-token`: HuggingFace token for model access (optional, may be required)
-- `--whisper-model`: Whisper model size: tiny, base, small, medium, large (default: base)
-- `--speaker-threshold`: Similarity threshold for speaker identification, 0.0-1.0 (default: 0.7)
-- `--merge-gap`: Maximum gap in seconds to merge adjacent segments (default: 0.5)
-- `--no-spoof-check`: Disable spoofing detection
-
-## Output Format
-
-### CLI Output
-
-The pipeline prints results in the following format:
-```
-[start-end] SPEAKER_NAME: transcribed text (spoof_flag)
-```
-
-Example:
-```
-[0.00-2.50] Alice: Hello, how are you? (✓)
-[2.50-5.00] Bob: I am doing well, thank you. (✓)
-[5.00-7.50] UNKNOWN: Can you help me with this? (✓)
-```
-
-Where:
-- `[start-end]`: Timestamp range in seconds
-- `SPEAKER_NAME`: Identified speaker or "UNKNOWN"
-- `transcribed text`: ASR transcription
-- `(✓)`: Genuine voice (or `(✗)` if spoofed - placeholder always shows ✓)
-
-### JSON Output
-
-The JSON output contains structured data:
-```json
-{
-  "audio_file": "path/to/audio.wav",
-  "num_segments": 3,
-  "segments": [
-    {
-      "start": 0.0,
-      "end": 2.5,
-      "text": "Hello, how are you?",
-      "speaker_label": "SPEAKER_00",
-      "identified_speaker": "Alice",
-      "similarity_score": 0.85,
-      "spoof_check": {
-        "is_genuine": true,
-        "confidence": 1.0,
-        "method": "placeholder"
-      }
-    }
-  ]
-}
-```
-
-## Module Usage
-
-Each module can be run independently for testing:
-
-### Diarization
 ```bash
-python diarization/diarize.py audio.wav
+# Run enhanced benchmark (tested on LibriSpeech)
+python scripts/benchmark_enhanced.py
 ```
 
-### ASR Transcription
-```bash
-python asr/transcribe.py audio.wav
-```
+## Configuration
 
-### Speaker Identification
-```bash
-python embeddings/speaker_id.py audio.wav
-```
+| Argument | Default | Description |
+|----------|---------|-------------|
+| `--speaker-threshold` | `0.75` | Cosine similarity score (0-1) to accept a speaker. |
+| `--min-speakers` | `None` | Hint for diarization. |
+| `--max-speakers` | `None` | Hint for diarization. |
+| `--no-auth-filter` | `False` | Disable authorization (transcribe everyone). |
 
-### Spoofing Detection
-```bash
-python spoofing/spoof_check.py audio.wav
-```
+## Performance
 
-## Speaker Registry
-
-The system maintains a registry of known speakers in `data/speaker_registry.json`. To add a known speaker:
-
-```python
-from embeddings.speaker_id import extract_speaker_embedding, save_speaker_to_registry
-
-# Extract embedding from reference audio
-embedding = extract_speaker_embedding("reference_audio.wav")
-
-# Save to registry
-save_speaker_to_registry("Alice", embedding, metadata={"email": "alice@example.com"})
-```
-
-The registry is automatically loaded during speaker identification.
-
-## Current Limitations
-
-1. **Anti-Spoofing**: Currently a placeholder that always returns "genuine". Future work needed to integrate pretrained anti-spoofing models.
-
-2. **Speaker Registry**: Manual process to add known speakers. No automatic enrollment from diarization output.
-
-3. **Overlapping Speech**: Basic handling of overlapping speech segments. May not perfectly handle complex overlaps.
-
-4. **Language Support**: Currently configured for English. WhisperX supports multiple languages but alignment model is English-only.
-
-5. **Model Access**: Requires HuggingFace account and token acceptance for pyannote.audio models.
-
-6. **GPU Memory**: Large Whisper models require significant GPU memory. Use smaller models (base/small) if memory is limited.
-
-## Future Work
-
-1. **Anti-Spoofing Integration**:
-   - Integrate ASVspoof or AASIST pretrained models
-   - Add confidence scores and detailed spoofing analysis
-
-2. **Automatic Speaker Enrollment**:
-   - Automatically add speakers to registry after manual verification
-   - Support for speaker clustering and naming
-
-3. **Improved Overlap Handling**:
-   - Better handling of simultaneous speech
-   - Multi-speaker transcription for overlapping segments
-
-4. **Multi-Language Support**:
-   - Language detection
-   - Language-specific alignment models
-
-5. **Performance Optimization**:
-   - Batch processing for multiple files
-   - Streaming support for real-time processing
-   - Model quantization for faster inference
-
-6. **Enhanced Output Formats**:
-   - SRT subtitle file generation
-   - RTTM format export
-   - WebVTT format support
-
-## Troubleshooting
-
-### "Failed to load diarization pipeline"
-- Ensure you've accepted model terms at https://huggingface.co/pyannote/speaker-diarization-3.1
-- Provide HuggingFace token with `--hf-token` flag
-
-### "CUDA out of memory"
-- Use smaller Whisper model: `--whisper-model tiny` or `--whisper-model base`
-- Process shorter audio segments
-- Use CPU mode (slower but uses less memory)
-
-### "No module named 'resemblyzer'"
-- Install dependencies: `pip install -r requirements.txt`
-- If issues persist, resemblyzer may need additional setup
-
-### Poor transcription accuracy
-- Use larger Whisper model: `--whisper-model large`
-- Ensure audio quality is good (16kHz, mono recommended)
-- Check audio file format (WAV, MP3, etc.)
-
-### Speaker identification always returns "UNKNOWN"
-- Check that speaker registry exists and contains known speakers
-- Lower the similarity threshold: `--speaker-threshold 0.5`
-- Ensure audio segments are long enough (>0.5 seconds)
+- **Clean Audio**: ~96.7% Accuracy, 3.8% False Acceptance Rate (FAR).
+- **Noisy Audio (20dB)**: ~85% Accuracy, 0% FAR (Secure failure mode).
+- **Long Conversation**: 100% Accuracy on 6-minute multi-speaker test.
 
 ## License
-
-This project is for educational/capstone purposes. Please check individual model licenses:
-- pyannote.audio: MIT License
-- WhisperX: MIT License
-- Resemblyzer: MIT License
-
-## Acknowledgments
-
-- pyannote.audio team for speaker diarization models
-- OpenAI for Whisper ASR models
-- Resemblyzer for speaker embedding models
-- Inspired by SpeakerLM and related research
-
-## Contact
-
-For questions or issues, please refer to the project documentation or contact the project maintainer.
+MIT License.

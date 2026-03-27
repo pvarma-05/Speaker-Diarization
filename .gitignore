@@ -25,7 +25,8 @@ Thumbs.db
 *.onnx
 
 # Data - Limit large files
-data/dev-clean.tar.gz  # Too big for GitHub (300MB+), download via script instead
+# Too big for GitHub (300MB+), download via script instead
+data/dev-clean.tar.gz
 
 # Results and small data - ALLOWED (un-ignored)
 # We want to push results/, registries, and test audio for the demo
