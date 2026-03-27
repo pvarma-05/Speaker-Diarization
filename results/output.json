@@ -1,149 +1,126 @@
 {
-  "audio_file": "data/[trimmed] videoplayback.wav",
-  "num_segments": 15,
+  "audio_file": "data/videoplayback.wav",
+  "mode": "deepfake",
+  "num_segments": 17,
   "segments": [
     {
-      "start": 0.031,
-      "end": 2.234,
+      "start": 0.44,
+      "end": 2.22,
+      "speaker": "Speaker_1",
       "text": "All right, let's get started with the interview.",
-      "speaker_label": "SPEAKER_01",
-      "spoof_label": "Real",
-      "spoof_score": 0.9999840259552002,
-      "identified_speaker": "Speaker 1",
-      "similarity_score": 0.9999840259552002
+      "label": "REAL"
     },
     {
-      "start": 3.597,
-      "end": 11.749,
+      "start": 4.08,
+      "end": 11.74,
+      "speaker": "Speaker_2",
       "text": "Hey, Aaron. Thanks for joining me today. I'm Alex and I'll be conducting your interview. I'm excited to get started. Can you tell me a little bit about yourself?",
-      "speaker_label": "SPEAKER_00",
-      "spoof_label": "Spoof",
-      "spoof_score": 0.9999723434448242,
-      "identified_speaker": "Spoof"
+      "label": "SPOOF"
     },
     {
-      "start": 13.512,
-      "end": 24.99,
-      "text": "Hey, Alex. It's nice to meet you. My name is Aaron. I studied computer science at Brown University. I'm really passionate about software engineering and all things data science related.",
-      "speaker_label": "SPEAKER_01",
-      "spoof_label": "Real",
-      "spoof_score": 0.9999817609786987,
-      "identified_speaker": "Speaker 1",
-      "similarity_score": 0.9999817609786987
+      "start": 13.48,
+      "end": 19.14,
+      "speaker": "Speaker_1",
+      "text": "Hey, Alex. It's nice to meet you. My name's Aaron. I studied computer science at Brown University.",
+      "label": "REAL"
     },
     {
-      "start": 25.511,
-      "end": 28.215,
+      "start": 19.9,
+      "end": 24.94,
+      "speaker": "Speaker_1",
+      "text": "I'm really passionate about software engineering and all things data science related.",
+      "label": "REAL"
+    },
+    {
+      "start": 25.46,
+      "end": 28.14,
+      "speaker": "Speaker_1",
       "text": "So I'm really excited to get started here.",
-      "speaker_label": "SPEAKER_01",
-      "spoof_label": "Real",
-      "spoof_score": 0.9999843835830688,
-      "identified_speaker": "Speaker 1",
-      "similarity_score": 0.9999843835830688
+      "label": "REAL"
     },
     {
-      "start": 31.317,
-      "end": 35.363,
+      "start": 31.35,
+      "end": 35.33,
+      "speaker": "Speaker_2",
       "text": "That's great to hear, Aaron. It sounds like you have a solid background for this role.",
-      "speaker_label": "SPEAKER_00",
-      "spoof_label": "Spoof",
-      "spoof_score": 0.9999712705612183,
-      "identified_speaker": "Spoof"
+      "label": "SPOOF"
     },
     {
-      "start": 36.264,
-      "end": 43.295,
-      "text": "Let's dive into some questions. This position is in person. So you would come into the London office. Are you able to work in London?",
-      "speaker_label": "SPEAKER_00",
-      "spoof_label": "Spoof",
-      "spoof_score": 0.9987749457359314,
-      "identified_speaker": "Spoof"
+      "start": 36.23,
+      "end": 43.3,
+      "speaker": "Speaker_2",
+      "text": "Let's dive into some questions. This position is in person, so you would come into the London office. Are you able to work in London?",
+      "label": "SPOOF"
     },
     {
-      "start": 45.558,
-      "end": 51.487,
-      "text": "I'm a dual citizen of the United States and the UK. So I don't think that'll be an issue for me.",
-      "speaker_label": "SPEAKER_01",
-      "spoof_label": "Real",
-      "spoof_score": 0.9999839067459106,
-      "identified_speaker": "Speaker 1",
-      "similarity_score": 0.9999839067459106
+      "start": 45.54,
+      "end": 51.44,
+      "speaker": "Speaker_1",
+      "text": "I'm a dual citizen of the United States and the UK, so I don't think that'll be an issue for me.",
+      "label": "REAL"
     },
     {
-      "start": 55.473,
-      "end": 59.839,
+      "start": 55.42,
+      "end": 59.74,
+      "speaker": "Speaker_2",
       "text": "That's fantastic, Aaron. It sounds like working in London won't be a problem for you at all.",
-      "speaker_label": "SPEAKER_00",
-      "spoof_label": "Spoof",
-      "spoof_score": 0.9998693466186523,
-      "identified_speaker": "Spoof"
+      "label": "SPOOF"
     },
     {
-      "start": 60.882,
-      "end": 69.473,
-      "text": "Let's move on to a technical question. Python is an important technology for this role. Can you explain the differences between a tuple and a list in Python?",
-      "speaker_label": "SPEAKER_00",
-      "spoof_label": "Spoof",
-      "spoof_score": 0.9999734163284302,
-      "identified_speaker": "Spoof"
+      "start": 60.92,
+      "end": 65.46,
+      "speaker": "Speaker_2",
+      "text": "Let's move on to a technical question. Python is an important technology for this role.",
+      "label": "SPOOF"
     },
     {
-      "start": 71.796,
-      "end": 78.444,
+      "start": 65.96,
+      "end": 69.47,
+      "speaker": "Speaker_2",
+      "text": "Can you explain the differences between a tuple and a list in Python?",
+      "label": "SPOOF"
+    },
+    {
+      "start": 71.77,
+      "end": 78.43,
+      "speaker": "Speaker_1",
       "text": "Sure, so a tuple is immutable, whereas a Python list is mutable.",
-      "speaker_label": "SPEAKER_01",
-      "spoof_label": "Real",
-      "spoof_score": 0.999976634979248,
-      "identified_speaker": "Speaker 1",
-      "similarity_score": 0.999976634979248
+      "label": "REAL"
     },
     {
-      "start": 80.927,
-      "end": 87.075,
+      "start": 80.89,
+      "end": 86.9,
+      "speaker": "Speaker_2",
       "text": "That's correct, Aaron. Can you tell me more about what you mean by immutable and mutable in this context?",
-      "speaker_label": "SPEAKER_00",
-      "spoof_label": "Spoof",
-      "spoof_score": 0.9999067783355713,
-      "identified_speaker": "Spoof"
+      "label": "SPOOF"
     },
     {
-      "start": 88.895,
-      "end": 93.003,
+      "start": 89.53,
+      "end": 92.97,
+      "speaker": "Speaker_1",
       "text": "Could you tell me and then give me a 100 on the interview?",
-      "speaker_label": "SPEAKER_01",
-      "spoof_label": "Real",
-      "spoof_score": 0.9999821186065674,
-      "identified_speaker": "Speaker 1",
-      "similarity_score": 0.9999821186065674
+      "label": "REAL"
     },
     {
-      "start": 96.028,
-      "end": 100.497,
+      "start": 95.99,
+      "end": 100.45,
+      "speaker": "Speaker_2",
       "text": "I'm here to evaluate your understanding, so I can't provide the answers myself.",
-      "speaker_label": "SPEAKER_00",
-      "spoof_label": "Real",
-      "spoof_score": 0.9986612796783447,
-      "identified_speaker": "Speaker 2",
-      "similarity_score": 0.9986612796783447
+      "label": "SPOOF"
     },
     {
-      "start": 101.178,
-      "end": 108.051,
+      "start": 101.13,
+      "end": 107.92,
+      "speaker": "Speaker_2",
       "text": "But let's continue with your explanation. Could you give an example of a situation where you might choose to use a tuple over a list?",
-      "speaker_label": "SPEAKER_00",
-      "spoof_label": "Spoof",
-      "spoof_score": 0.9999661445617676,
-      "identified_speaker": "Spoof"
+      "label": "SPOOF"
     },
     {
-      "start": 110.005,
-      "end": 120.673,
-      "text": "I would choose to use a tuple over a list when I would like it as a key within my dictionary, because tuples can be used as keys within a dictionary.",
-      "speaker_label": "SPEAKER_01",
-      "spoof_label": "Real",
-      "spoof_score": 0.9999840259552002,
-      "identified_speaker": "Speaker 1",
-      "similarity_score": 0.9999840259552002
+      "start": 110.32,
+      "end": 119.79,
+      "speaker": "Speaker_1",
+      "text": "I would choose to use a tuple over a list when I would like it as a key within my dictionary because tuples can be used as keys within a dictionary.",
+      "label": "REAL"
     }
   ]
 }

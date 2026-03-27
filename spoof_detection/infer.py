@@ -1,9 +1,9 @@
+"""Wav2vec2-based deepfake/spoof audio detector."""
 
 import numpy as np
 import torch
 import librosa
 
-# HuggingFace model ID for wav2vec2-based deepfake detection
 WAV2VEC2_MODEL_ID = "mo-thecreator/Deepfake-audio-detection"
 
 
@@ -16,15 +16,13 @@ class SpoofDetector:
     """
 
     def __init__(self, model_id=None):
-        from transformers import pipeline as hf_pipeline
+        from transformers import AutoFeatureExtractor, AutoModelForAudioClassification
 
         model_id = model_id or WAV2VEC2_MODEL_ID
-        device = 0 if torch.cuda.is_available() else -1
-        self._pipe = hf_pipeline(
-            "audio-classification",
-            model=model_id,
-            device=device,
-        )
+        self._device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self._extractor = AutoFeatureExtractor.from_pretrained(model_id)
+        self._model = AutoModelForAudioClassification.from_pretrained(model_id).to(self._device)
+        self._model.eval()
         print(f"Loaded Anti-Spoofing Model: {model_id}")
 
     def predict(self, audio_path_or_array, sr=16000):
@@ -32,7 +30,7 @@ class SpoofDetector:
 
         Args:
             audio_path_or_array: File path (str) or numpy array of audio.
-            sr: Sample rate (default 16000). Audio will be resampled if needed.
+            sr: Sample rate (default 16000).
 
         Returns:
             Tuple of (label, score) where label is "Real" or "Spoof"
@@ -46,10 +44,18 @@ class SpoofDetector:
                 X = librosa.resample(X, orig_sr=sr, target_sr=16000)
                 sr = 16000
 
-        result = self._pipe({"raw": X.astype(np.float32), "sampling_rate": sr})
-        top = result[0]
-        label_raw = top["label"].lower()
-        score = top["score"]
+        inputs = self._extractor(
+            X.astype(np.float32), sampling_rate=sr, return_tensors="pt"
+        )
+        inputs = {k: v.to(self._device) for k, v in inputs.items()}
+
+        with torch.no_grad():
+            logits = self._model(**inputs).logits
+
+        probs = torch.softmax(logits, dim=-1)
+        predicted_class = probs.argmax(-1).item()
+        score = probs[0, predicted_class].item()
+        label_raw = self._model.config.id2label[predicted_class].lower()
 
         if "fake" in label_raw or "spoof" in label_raw:
             return "Spoof", score

@@ -61,8 +61,11 @@ def transcribe_audio(audio_file: str, models: Dict = None,
         models = load_whisperx_model(model_name)
     
     try:
-        # Load audio
-        audio = whisperx.load_audio(audio_file)
+        # Load audio with librosa (avoids ffmpeg dependency on Windows)
+        import librosa
+        import numpy as np
+        audio, _ = librosa.load(audio_file, sr=16000, mono=True)
+        audio = audio.astype(np.float32)
         
         # Transcribe
         result = models['model'].transcribe(audio, batch_size=batch_size)

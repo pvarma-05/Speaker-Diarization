@@ -1,5 +1,6 @@
 # Virtual environment
 venv/
+.venv/
 
 # Environment variables / secrets
 .env
@@ -23,6 +24,7 @@ Thumbs.db
 *.pt
 *.bin
 *.onnx
+pretrained_models/
 
 # Data - Limit large files
 # Too big for GitHub (300MB+), download via script instead

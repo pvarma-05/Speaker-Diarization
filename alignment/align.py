@@ -4,7 +4,6 @@ Assigns speaker labels to text segments based on timestamp overlap.
 """
 
 from typing import List, Dict
-import numpy as np
 
 
 def calculate_overlap(seg1_start: float, seg1_end: float, 

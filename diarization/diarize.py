@@ -15,18 +15,29 @@ def load_diarization_pipeline(use_auth_token: str = None) -> Pipeline:
     Load pretrained pyannote.audio diarization pipeline.
     
     Args:
-        use_auth_token: HuggingFace token if needed for model access
+        use_auth_token: HuggingFace token for model access
         
     Returns:
         pyannote.audio Pipeline object
     """
     try:
-        # Use the pretrained diarization pipeline
-        # Note: User needs to accept model terms on HuggingFace
-        pipeline = Pipeline.from_pretrained(
-            "pyannote/speaker-diarization-3.1",
-            use_auth_token=use_auth_token
-        )
+        if use_auth_token:
+            import os
+            os.environ["HF_TOKEN"] = use_auth_token
+
+        # Newer pyannote uses 'token', older uses 'use_auth_token'
+        import inspect
+        sig = inspect.signature(Pipeline.from_pretrained)
+        if 'token' in sig.parameters:
+            pipeline = Pipeline.from_pretrained(
+                "pyannote/speaker-diarization-3.1",
+                token=use_auth_token
+            )
+        else:
+            pipeline = Pipeline.from_pretrained(
+                "pyannote/speaker-diarization-3.1",
+                use_auth_token=use_auth_token
+            )
         
         # Move to GPU if available
         if torch.cuda.is_available():
@@ -56,10 +67,21 @@ def diarize_audio(audio_file: str, pipeline: Pipeline = None,
         pipeline = load_diarization_pipeline(use_auth_token)
     
     try:
-        # Run diarization
-        diarization = pipeline(audio_file)
-        
-        # Convert to list of dictionaries
+        # Pre-load audio with torchaudio to avoid torchcodec issues on Windows
+        import torchaudio
+        waveform, sample_rate = torchaudio.load(audio_file)
+        if waveform.shape[0] > 1:
+            waveform = waveform.mean(dim=0, keepdim=True)
+        audio_input = {"waveform": waveform, "sample_rate": sample_rate}
+
+        result = pipeline(audio_input)
+
+        # pyannote 4.x returns DiarizeOutput; 3.x returns Annotation directly
+        if hasattr(result, 'speaker_diarization'):
+            diarization = result.speaker_diarization
+        else:
+            diarization = result
+
         segments = []
         for turn, _, speaker in diarization.itertracks(yield_label=True):
             segments.append({

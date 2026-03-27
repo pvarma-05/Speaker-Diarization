@@ -1,103 +1,157 @@
-# Speaker Authorization Pipeline (S-O-EEND-SDR)
+# Speaker Diarization & Secure Speaker Recognition
 
-A secure, open-set speaker diarization and **authorization** pipeline. It transcribes only **authorized speakers** and filters out unauthorized voices (imposters/uninvited speakers).
+A modular pipeline for speaker diarization and secure speaker recognition in multi-speaker conversations using pretrained models.
 
-## Key Features
+## Features
 
-- **Speaker Diarization**: Uses `pyannote.audio` to determine "who spoke when".
-- **Speaker Authorization**: Verifies speaker identity against a secure registry using `Resemblyzer` embeddings (Cosine Similarity > 0.75).
-- **ASR Transcription**: Uses `WhisperX` for accurate, timestamped speech-to-text.
-- **Security Filter**: Automatically mutes/removes segments from unauthorized speakers.
+- **Speaker Diarization** - Who spoke when (pyannote.audio 3.1)
+- **Speech-to-Text** - Timestamped transcription (WhisperX)
+- **Spoof Detection** - Detect AI-generated voices using Wav2Vec2
+- **Open-Set Speaker Recognition** - Identify speakers using ECAPA-TDNN embeddings + cosine similarity
+
+## Pipeline Architecture
+
+```
+Input Audio
+  -> Preprocessing (16kHz mono)
+  -> Speaker Diarization (pyannote pretrained pipeline)
+  -> ASR (WhisperX)
+  -> Alignment (speaker + text fusion)
+  -> Mode Switch:
+       --mode deepfake : Spoof Detection (Wav2Vec2)  -> REAL / SPOOF
+       --mode auth     : Speaker Recognition (ECAPA-TDNN) -> Name / UNKNOWN
+  -> Structured JSON Output
+```
 
 ## Project Structure
 
 ```
-sdr-project/
-├── data/
-│   ├── speaker_registry.json     # Encrypted-like embeddings of authorized users
-│   └── speakers/                 # Source audio for enrollment (optional)
-├── results/                      # Generated transcripts and logs
-├── diarization/                  # Diarization logic (pyannote)
-├── asr/                          # Transcription logic (WhisperX)
-├── start_here/                   # Entry point scripts
+Speaker-Diarization/
+├── main.py                     # Single entry point
+├── diarization/
+│   └── diarize.py              # pyannote speaker diarization
+├── asr/
+│   └── transcribe.py           # WhisperX transcription
+├── alignment/
+│   └── align.py                # Speaker-text alignment
+├── embeddings/
+│   └── speaker_id.py           # ECAPA-TDNN speaker identification
+├── spoof_detection/
+│   └── infer.py                # Wav2Vec2 deepfake detection
+├── utils/
+│   └── audio_utils.py          # Audio preprocessing
 ├── scripts/
-│   ├── enroll_speaker.py         # CLI to add users to registry
-│   ├── benchmark_auth.py         # Test system accuracy
-│   └── setup_test_data.py        # Download test samples
-├── utilities/                    # Audio processing helpers
-├── main.py                       # Main pipeline entry point
-└── requirements.txt              # Dependencies
+│   ├── enroll_speaker.py       # Enroll a speaker into registry
+│   └── setup_speakers.py       # Batch speaker enrollment
+├── data/
+│   └── speaker_registry.json   # Registered speaker embeddings
+├── results/                    # Output JSON files
+├── test_pipeline.py            # Module tests
+└── requirements.txt
 ```
 
 ## Installation
 
-### 1. Prerequisities
-- Python 3.10
-- GPU recommended (for faster processing)
-- **Hugging Face Account** (Required for pyannote model)
+### Prerequisites
 
-### 2. Setup
+- Python 3.10
+- GPU recommended (but CPU works)
+- HuggingFace account (for pyannote model access)
+
+### Setup
+
 ```bash
-# Clone
 git clone https://github.com/pvarma-05/Speaker-Diarization.git
 cd Speaker-Diarization
-
-# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 3. **CRITICAL: Hugging Face Token**
-This pipeline uses the `pyannote/speaker-diarization-3.1` model, which is gated.
-1. Go to [huggingface.co/pyannote/speaker-diarization-3.1](https://huggingface.co/pyannote/speaker-diarization-3.1) and accept the terms.
-2. Get your Access Token from [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
-3. Set it as an environment variable or pass it via CLI.
+### HuggingFace Token (Required)
 
-### 4. **CRITICAL: Enroll Speakers Locally**
-Voiceprint embeddings must be computed on YOUR machine. After cloning, run:
-```bash
-python scripts/setup_speakers.py
-```
-This enrolls Alice, Bob, and Charlie from the included audio samples. Only needed once per machine.
+The pipeline uses `pyannote/speaker-diarization-3.1` which is a gated model:
+
+1. Accept terms at [huggingface.co/pyannote/speaker-diarization-3.1](https://huggingface.co/pyannote/speaker-diarization-3.1)
+2. Get your token from [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+3. Set it: `export HF_TOKEN=your_token` or create a `.env` file with `HF_TOKEN=your_token`
 
 ## Usage
 
-### 1. Enroll an Authorized Speaker
-Before the system can recognize "Alice", you must enroll her voice.
-**Requirements:** 3-5 clear audio clips of the speaker.
+### Spoof Detection Mode
+
+Detect AI-generated or TTS voices in a conversation:
+
+```bash
+python main.py --audio input.wav --mode deepfake
+python main.py --audio input.wav --mode deepfake --output results/output.json
+```
+
+### Open-Set Speaker Recognition Mode
+
+Identify registered speakers and flag unknown voices:
+
+```bash
+python main.py --audio input.wav --mode auth
+python main.py --audio input.wav --mode auth --speaker-threshold 0.8
+```
+
+### Enroll Speakers (for auth mode)
 
 ```bash
 python scripts/enroll_speaker.py --name "Alice" --audio path/to/alice.wav
+python scripts/enroll_speaker.py --list
+python scripts/setup_speakers.py   # Batch enrollment from data/speakers/
 ```
 
-### 2. Run the Pipeline
-Process a meeting recording. Only "Alice" (and other enrolled users) will be transcribed.
+### Run Tests
 
 ```bash
-python main.py meeting_audio.wav --output results/meeting_transcript.json --hf-token YOUR_TOKEN
+python test_pipeline.py
 ```
 
-### 3. Benchmarking
-Verify system accuracy on your hardware.
+## Output Format
 
-```bash
-# Run enhanced benchmark (tested on LibriSpeech)
-python scripts/benchmark_enhanced.py
+```json
+[
+  {
+    "start": 0.0,
+    "end": 3.2,
+    "speaker": "Speaker_1",
+    "text": "Hello everyone",
+    "label": "REAL"
+  }
+]
 ```
+
+| Field   | Description |
+|---------|-------------|
+| start   | Segment start time (seconds) |
+| end     | Segment end time (seconds) |
+| speaker | Speaker identifier |
+| text    | Transcribed text |
+| label   | `REAL` / `SPOOF` (deepfake mode) or speaker name / `UNKNOWN` (auth mode) |
 
 ## Configuration
 
 | Argument | Default | Description |
 |----------|---------|-------------|
-| `--speaker-threshold` | `0.75` | Cosine similarity score (0-1) to accept a speaker. |
-| `--min-speakers` | `None` | Hint for diarization. |
-| `--max-speakers` | `None` | Hint for diarization. |
-| `--no-auth-filter` | `False` | Disable authorization (transcribe everyone). |
+| `--audio` | required | Path to input audio file |
+| `--mode` | `auth` | Pipeline mode: `auth` or `deepfake` |
+| `--output` | None | Path to save JSON output |
+| `--hf-token` | from .env | HuggingFace API token |
+| `--whisper-model` | `base` | Whisper model size (`tiny`, `base`, `small`, `medium`, `large`) |
+| `--speaker-threshold` | `0.75` | Cosine similarity threshold for speaker recognition |
+| `--merge-gap` | `0.5` | Max gap (seconds) to merge adjacent same-speaker segments |
+| `--no-auth-filter` | False | Include unknown speakers in output |
 
-## Performance
+## Pretrained Models Used
 
-- **Clean Audio**: ~96.7% Accuracy, 3.8% False Acceptance Rate (FAR).
-- **Noisy Audio (20dB)**: ~85% Accuracy, 0% FAR (Secure failure mode).
-- **Long Conversation**: 100% Accuracy on 6-minute multi-speaker test.
+| Component | Model | Source |
+|-----------|-------|--------|
+| Diarization | pyannote/speaker-diarization-3.1 | HuggingFace |
+| ASR | WhisperX (OpenAI Whisper + alignment) | faster-whisper |
+| Speaker Embeddings | ECAPA-TDNN | SpeechBrain (speechbrain/spkrec-ecapa-voxceleb) |
+| Spoof Detection | Wav2Vec2 fine-tuned | HuggingFace (mo-thecreator/Deepfake-audio-detection) |
 
 ## License
+
 MIT License.
