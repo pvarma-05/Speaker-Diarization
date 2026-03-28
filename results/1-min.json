@@ -1,0 +1,203 @@
+{
+  "audio_file": "data/audio/1-min.wav",
+  "mode": "deepfake",
+  "num_segments": 28,
+  "segments": [
+    {
+      "start": 3.41,
+      "end": 3.87,
+      "speaker": "Speaker_1",
+      "text": "Mary? Hi.",
+      "label": "REAL"
+    },
+    {
+      "start": 5.51,
+      "end": 6.75,
+      "speaker": "Speaker_2",
+      "text": "Hello.",
+      "label": "REAL"
+    },
+    {
+      "start": 6.91,
+      "end": 8.84,
+      "speaker": "Speaker_1",
+      "text": "I'm Susan Thompson, Resource Manager.",
+      "label": "SPOOF"
+    },
+    {
+      "start": 9.41,
+      "end": 15.24,
+      "speaker": "Speaker_2",
+      "text": "Hi. I'm Mary Hansen, and I'm applying for one of your kitchen jobs. Great. Here's a copy of my resume.",
+      "label": "REAL"
+    },
+    {
+      "start": 15.9,
+      "end": 17.04,
+      "speaker": "Speaker_1",
+      "text": "Great. Have a seat, Mary.",
+      "label": "REAL"
+    },
+    {
+      "start": 17.08,
+      "end": 17.72,
+      "speaker": "Speaker_2",
+      "text": "Thank you.",
+      "label": "REAL"
+    },
+    {
+      "start": 23.3,
+      "end": 25.7,
+      "speaker": "Speaker_1",
+      "text": "Mary, do you have any experience working in the kitchen?",
+      "label": "REAL"
+    },
+    {
+      "start": 26.22,
+      "end": 30.35,
+      "speaker": "Speaker_2",
+      "text": "No, but I want to learn. I work hard, and I cook a lot at home.",
+      "label": "REAL"
+    },
+    {
+      "start": 31.55,
+      "end": 33.19,
+      "speaker": "Speaker_1",
+      "text": "Okay. Well, tell me about yourself.",
+      "label": "REAL"
+    },
+    {
+      "start": 34.2,
+      "end": 37.46,
+      "speaker": "Speaker_2",
+      "text": "Well, I love to learn new things.",
+      "label": "REAL"
+    },
+    {
+      "start": 38.02,
+      "end": 39.64,
+      "speaker": "Speaker_2",
+      "text": "I'm very organized.",
+      "label": "REAL"
+    },
+    {
+      "start": 40.56,
+      "end": 43.24,
+      "speaker": "Speaker_2",
+      "text": "And I followed directions exactly.",
+      "label": "REAL"
+    },
+    {
+      "start": 44.44,
+      "end": 48.37,
+      "speaker": "Speaker_2",
+      "text": "That's why my boss at my last job made me a trainer.",
+      "label": "REAL"
+    },
+    {
+      "start": 49.28,
+      "end": 55.31,
+      "speaker": "Speaker_2",
+      "text": "And the company actually gave me a special certificate for coming to work on time every day for a year.",
+      "label": "REAL"
+    },
+    {
+      "start": 56.53,
+      "end": 61.69,
+      "speaker": "Speaker_2",
+      "text": "And I'm taking an English class to improve my writing skills.",
+      "label": "REAL"
+    },
+    {
+      "start": 62.19,
+      "end": 63.11,
+      "speaker": "Speaker_1",
+      "text": "That's great.",
+      "label": "REAL"
+    },
+    {
+      "start": 63.84,
+      "end": 66.14,
+      "speaker": "Speaker_1",
+      "text": "Why did you leave your last job?",
+      "label": "REAL"
+    },
+    {
+      "start": 66.16,
+      "end": 68.46,
+      "speaker": "Speaker_2",
+      "text": "It was graveyard and I need to work days.",
+      "label": "REAL"
+    },
+    {
+      "start": 69.32,
+      "end": 72.32,
+      "speaker": "Speaker_1",
+      "text": "Oh, I see. Well, what hours can you work?",
+      "label": "REAL"
+    },
+    {
+      "start": 72.36,
+      "end": 73.76,
+      "speaker": "Speaker_2",
+      "text": "From 8 a.m. until 5 p.m.",
+      "label": "REAL"
+    },
+    {
+      "start": 74.72,
+      "end": 76.76,
+      "speaker": "Speaker_1",
+      "text": "Okay. Well, do you have any questions for me, Mary?",
+      "label": "REAL"
+    },
+    {
+      "start": 77.5,
+      "end": 80.38,
+      "speaker": "Speaker_2",
+      "text": "Yes. What kind of training is needed?",
+      "label": "REAL"
+    },
+    {
+      "start": 81.48,
+      "end": 86.68,
+      "speaker": "Speaker_1",
+      "text": "Not a lot. Most new workers can learn everything the first day. Do you have any other questions?",
+      "label": "REAL"
+    },
+    {
+      "start": 87.38,
+      "end": 92.9,
+      "speaker": "Speaker_2",
+      "text": "No, I don't think so, but I've heard a lot of good things about your company and I would really like to work here.",
+      "label": "REAL"
+    },
+    {
+      "start": 93.5,
+      "end": 98.05,
+      "speaker": "Speaker_1",
+      "text": "Well, I have a few more interviews to do today, but I will call you tomorrow if you get the job.",
+      "label": "REAL"
+    },
+    {
+      "start": 98.27,
+      "end": 102.39,
+      "speaker": "Speaker_2",
+      "text": "Okay. It was sure nice to meet you. Nice meeting you too. Thank you so much for your time. Yes.",
+      "label": "REAL"
+    },
+    {
+      "start": 102.45,
+      "end": 102.83,
+      "speaker": "Speaker_1",
+      "text": "Good luck.",
+      "label": "REAL"
+    },
+    {
+      "start": 102.93,
+      "end": 103.31,
+      "speaker": "Speaker_2",
+      "text": "Thank you.",
+      "label": "REAL"
+    }
+  ]
+}

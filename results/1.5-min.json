@@ -1,0 +1,119 @@
+{
+  "audio_file": "data/audio/1.5-min.wav",
+  "mode": "deepfake",
+  "num_segments": 16,
+  "segments": [
+    {
+      "start": 0.27,
+      "end": 4.25,
+      "speaker": "Speaker_1",
+      "text": "Hello, everyone. Thank you guys for coming to our weekly student success meeting.",
+      "label": "REAL"
+    },
+    {
+      "start": 4.97,
+      "end": 16.51,
+      "speaker": "Speaker_1",
+      "text": "And let's just get started. So I have our list of chronically absent students here. And I've been noticing a troubling trend. A lot of students are skipping on Fridays. Does anyone have any idea what's going on?",
+      "label": "REAL"
+    },
+    {
+      "start": 17.35,
+      "end": 21.23,
+      "speaker": "Speaker_2",
+      "text": "I've heard some of my mentees talking about how it's really hard to get out of bed on Fridays.",
+      "label": "REAL"
+    },
+    {
+      "start": 21.81,
+      "end": 25.49,
+      "speaker": "Speaker_2",
+      "text": "It might be good if we did something like a pancake breakfast to encourage them to come.",
+      "label": "REAL"
+    },
+    {
+      "start": 26.33,
+      "end": 27.43,
+      "speaker": "Speaker_1",
+      "text": "I think that's a great idea.",
+      "label": "SPOOF"
+    },
+    {
+      "start": 27.81,
+      "end": 28.85,
+      "speaker": "Speaker_3",
+      "text": "Let's try that next week.",
+      "label": "SPOOF"
+    },
+    {
+      "start": 30.32,
+      "end": 44.37,
+      "speaker": "Speaker_3",
+      "text": "It might also be because a lot of students have been getting sick now that it's getting colder outside. I've had a number of students come by my office with symptoms like sniffling and coughing. We should put up posters with tips for not getting sick since it's almost flu season, like, you know, wash your hands after the bathroom, stuff like that.",
+      "label": "REAL"
+    },
+    {
+      "start": 44.88,
+      "end": 53.97,
+      "speaker": "Speaker_1",
+      "text": "I think that's a good idea and it'll be a good reminder for the teachers as well. So one other thing I wanted to talk about, there's a student I've noticed here, John Smith.",
+      "label": "REAL"
+    },
+    {
+      "start": 54.59,
+      "end": 59.71,
+      "speaker": "Speaker_1",
+      "text": "He's missed seven days already and it's only November. Does anyone have an idea what's going on with him?",
+      "label": "REAL"
+    },
+    {
+      "start": 60.49,
+      "end": 68.88,
+      "speaker": "Speaker_2",
+      "text": "I might be able to fill in the gaps there. I talked to John today and he's really stressed out. He's been dealing with helping his parents take care of his younger siblings during the day.",
+      "label": "REAL"
+    },
+    {
+      "start": 70.08,
+      "end": 73.12,
+      "speaker": "Speaker_2",
+      "text": "It might actually be a good idea if he spoke to the guidance counselor a little bit.",
+      "label": "SPOOF"
+    },
+    {
+      "start": 73.76,
+      "end": 80.01,
+      "speaker": "Speaker_4",
+      "text": "I could talk to John today if you want to send him to my office after you meet with him. It's a lot to deal with for middle schooler.",
+      "label": "REAL"
+    },
+    {
+      "start": 80.91,
+      "end": 81.45,
+      "speaker": "Speaker_4",
+      "text": "Great thanks.",
+      "label": "REAL"
+    },
+    {
+      "start": 82.64,
+      "end": 90.68,
+      "speaker": "Speaker_4",
+      "text": "I can help out with the family's childcare needs. I'll look for some free or low-cost resources in the community to share with John and he can share them with his family.",
+      "label": "REAL"
+    },
+    {
+      "start": 91.24,
+      "end": 93.02,
+      "speaker": "Speaker_1",
+      "text": "Great. Well, some really good ideas here today.",
+      "label": "REAL"
+    },
+    {
+      "start": 93.78,
+      "end": 96.97,
+      "speaker": "Speaker_1",
+      "text": "Thanks for coming and if no one has anything else, I think we can wrap up.",
+      "label": "REAL"
+    }
+  ]
+}

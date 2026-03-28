@@ -1,0 +1,175 @@
+{
+  "audio_file": "data/audio/2-min.wav",
+  "mode": "deepfake",
+  "num_segments": 24,
+  "segments": [
+    {
+      "start": 0.14,
+      "end": 3.98,
+      "speaker": "Speaker_1",
+      "text": "So I'm happy to report we have succeeded in re-routing our flagships.",
+      "label": "REAL"
+    },
+    {
+      "start": 5.14,
+      "end": 6.03,
+      "speaker": "Speaker_1",
+      "text": "Way ahead of schedule.",
+      "label": "SPOOF"
+    },
+    {
+      "start": 6.57,
+      "end": 7.03,
+      "speaker": "Speaker_1",
+      "text": "Yet again.",
+      "label": "SPOOF"
+    },
+    {
+      "start": 8.25,
+      "end": 11.49,
+      "speaker": "Speaker_1",
+      "text": "This is allowed us to improve our USPs by 90%.",
+      "label": "REAL"
+    },
+    {
+      "start": 13.51,
+      "end": 14.79,
+      "speaker": "Speaker_2",
+      "text": "That's nine out of every ten.",
+      "label": "REAL"
+    },
+    {
+      "start": 15.79,
+      "end": 16.93,
+      "speaker": "Speaker_2",
+      "text": "Excellent. Thank you, Samuel.",
+      "label": "REAL"
+    },
+    {
+      "start": 17.97,
+      "end": 23.67,
+      "speaker": "Speaker_2",
+      "text": "Timothy, what's the status with the linear solutions? Could you give us the latest on the Square project?",
+      "label": "REAL"
+    },
+    {
+      "start": 24.17,
+      "end": 31.8,
+      "speaker": "Speaker_3",
+      "text": "The linear solutions department has yet again functioned at full capacity. and we have fulfilled 114% of this month's objectives.",
+      "label": "REAL"
+    },
+    {
+      "start": 32.68,
+      "end": 50.41,
+      "speaker": "Speaker_3",
+      "text": "You can read the handouts for a detailed account, but in short, as I reported last week, we've decided to use the right angle for the square project. There's still some debate as to how big a right angle is, so we're testing currently at 90, 97, 100 and 101 degrees.",
+      "label": "REAL"
+    },
+    {
+      "start": 51.37,
+      "end": 57.45,
+      "speaker": "Speaker_3",
+      "text": "As agreed, I've ensured Anderson Cross checks the design, removing any left angles and doesn't use them in future.",
+      "label": "REAL"
+    },
+    {
+      "start": 58.35,
+      "end": 60.27,
+      "speaker": "Speaker_4",
+      "text": "Overall, we have very good progress with the design.",
+      "label": "REAL"
+    },
+    {
+      "start": 60.93,
+      "end": 62.31,
+      "speaker": "Speaker_4",
+      "text": "Are we on track with a schedule?",
+      "label": "REAL"
+    },
+    {
+      "start": 62.85,
+      "end": 64.43,
+      "speaker": "Speaker_4",
+      "text": "When are we required to start delivering?",
+      "label": "REAL"
+    },
+    {
+      "start": 65.17,
+      "end": 71.86,
+      "speaker": "Speaker_4",
+      "text": "I'm happy to report that we are ready to start first deliveries tomorrow, which is way ahead of the requested delivery schedule.",
+      "label": "REAL"
+    },
+    {
+      "start": 72.02,
+      "end": 91.67,
+      "speaker": "Speaker_1",
+      "text": "We've only just finished system testing the prototype and are only halfway through performance testing. We haven't even released an alpha version yet. As I said earlier, we've had very good progress with the design. Yes, we've had very good progress, but I'd say the design of the product is only 75% complete. Well, exactly. That's three out of every four.",
+      "label": "REAL"
+    },
+    {
+      "start": 92.21,
+      "end": 94.01,
+      "speaker": "Speaker_1",
+      "text": "So we're ready to start shipping tomorrow.",
+      "label": "REAL"
+    },
+    {
+      "start": 94.33,
+      "end": 94.99,
+      "speaker": "Speaker_3",
+      "text": "What?",
+      "label": "REAL"
+    },
+    {
+      "start": 95.69,
+      "end": 97.07,
+      "speaker": "Speaker_3",
+      "text": "It doesn't work like that.",
+      "label": "REAL"
+    },
+    {
+      "start": 98.53,
+      "end": 107.04,
+      "speaker": "Speaker_3",
+      "text": "We'll produce, say, four units. But only ship the first three. Then when you're finally 100% complete with the design, we can then ship the fourth.",
+      "label": "REAL"
+    },
+    {
+      "start": 110.68,
+      "end": 113.2,
+      "speaker": "Speaker_2",
+      "text": "Excellent work, Timothy. You can proceed with the production.",
+      "label": "REAL"
+    },
+    {
+      "start": 113.84,
+      "end": 117.62,
+      "speaker": "Speaker_2",
+      "text": "Anderson, send me, please, a revised delivery schedule so I can share it with a client.",
+      "label": "REAL"
+    },
+    {
+      "start": 118.46,
+      "end": 120.21,
+      "speaker": "Speaker_2",
+      "text": "Well, thank you everyone.",
+      "label": "REAL"
+    },
+    {
+      "start": 120.77,
+      "end": 122.5,
+      "speaker": "Speaker_2",
+      "text": "This was very productive.",
+      "label": "REAL"
+    },
+    {
+      "start": 123.08,
+      "end": 123.48,
+      "speaker": "Speaker_2",
+      "text": "Yet again.",
+      "label": "REAL"
+    }
+  ]
+}

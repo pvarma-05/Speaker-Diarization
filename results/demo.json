@@ -1,0 +1,35 @@
+{
+  "audio_file": "data/audio/videoplayback.wav",
+  "mode": "auth",
+  "num_segments": 4,
+  "segments": [
+    {
+      "start": 45.54,
+      "end": 51.44,
+      "speaker": "Aaron",
+      "text": "I'm a dual citizen of the United States and the UK. So I don't think that'll be an issue for me.",
+      "label": "Aaron"
+    },
+    {
+      "start": 71.77,
+      "end": 78.43,
+      "speaker": "Aaron",
+      "text": "Sure, so a tuple is immutable, whereas a Python list is mutable.",
+      "label": "Aaron"
+    },
+    {
+      "start": 89.53,
+      "end": 92.97,
+      "speaker": "Aaron",
+      "text": "Could you tell me and then give me a 100 on the interview?",
+      "label": "Aaron"
+    },
+    {
+      "start": 110.32,
+      "end": 119.79,
+      "speaker": "Aaron",
+      "text": "I would choose to use a tuple over a list when I would like it as a key within my dictionary because tuples can be used as keys within a dictionary.",
+      "label": "Aaron"
+    }
+  ]
+}
