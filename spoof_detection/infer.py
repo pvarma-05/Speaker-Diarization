@@ -23,7 +23,6 @@ class SpoofDetector:
         self._extractor = AutoFeatureExtractor.from_pretrained(model_id)
         self._model = AutoModelForAudioClassification.from_pretrained(model_id).to(self._device)
         self._model.eval()
-        print(f"Loaded Anti-Spoofing Model: {model_id}")
 
     def predict(self, audio_path_or_array, sr=16000):
         """Classify an audio segment as Real or Spoof.

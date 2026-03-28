@@ -8,7 +8,7 @@ import torch
 import torchaudio
 import os
 import json
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Optional
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -46,7 +46,6 @@ def extract_speaker_embedding(audio_file: str, encoder=None) -> np.ndarray:
     if encoder is None:
         encoder = load_speaker_encoder()
 
-    # Load audio with torchaudio (SpeechBrain's load_audio mangles Windows paths)
     waveform, sr = torchaudio.load(audio_file)
     if sr != 16000:
         waveform = torchaudio.functional.resample(waveform, orig_freq=sr, new_freq=16000)
@@ -112,8 +111,20 @@ def save_speaker_to_registry(speaker_name: str, embedding: np.ndarray,
     """Save a speaker embedding to the registry."""
     registry = load_speaker_registry(registry_path)
 
+    # registry[speaker_name] = {
+    #     'embedding': embedding.tolist() if isinstance(embedding, np.ndarray) else embedding,
+    #     'metadata': metadata or {}
+    # }
+    if speaker_name in registry:
+        old_emb = np.array(registry[speaker_name]['embedding'])
+        new_emb = embedding
+    
+        final_emb = (old_emb + new_emb) / 2
+    else:
+        final_emb = embedding
+    
     registry[speaker_name] = {
-        'embedding': embedding.tolist() if isinstance(embedding, np.ndarray) else embedding,
+        'embedding': final_emb.tolist(),
         'metadata': metadata or {}
     }
 
@@ -159,10 +170,40 @@ def identify_speaker(embedding: np.ndarray, registry: Dict = None,
     return ("UNKNOWN", best_similarity)
 
 
+def resolve_speaker_display(
+    diarization_label: str,
+    embedding: Optional[np.ndarray],
+    registry: Dict,
+    threshold: float,
+    dia_to_guest: Dict[str, str],
+    guest_counter: List[int],
+) -> Tuple[str, str]:
+    """
+    Map diarization label + embedding to display speaker and AUTHORIZED/UNAUTHORIZED.
+
+    If registry match: speaker = enrolled name, type AUTHORIZED.
+    Else: speaker = Speaker_N (stable per diarization_label), type UNAUTHORIZED.
+
+    guest_counter is a single-element list [int] for mutable counter.
+    """
+    if embedding is not None and registry:
+        name, score = identify_speaker(embedding, registry, threshold)
+        # DEBUG STATEMENT
+        # print(f"Similarity: {score}, matched: {name}")
+        if name != "UNKNOWN":
+            return name, "AUTHORIZED"
+
+    if diarization_label not in dia_to_guest:
+        guest_counter[0] += 1
+        dia_to_guest[diarization_label] = f"Speaker_{guest_counter[0]}"
+
+    return dia_to_guest[diarization_label], "UNAUTHORIZED"
+
+
 def identify_speakers_in_segments(aligned_segments: List[Dict], audio_file: str,
                                   registry_path: str = "data/speaker_registry.json",
                                   threshold: float = 0.75) -> List[Dict]:
-    """Identify speakers for each aligned segment using ECAPA-TDNN embeddings."""
+    """Legacy: enrich segments with identified_speaker (kept for scripts)."""
     import librosa
 
     audio, sr = librosa.load(audio_file, sr=16000, mono=True)

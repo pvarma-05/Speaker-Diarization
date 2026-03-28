@@ -1,0 +1,148 @@
+{
+  "audio_file": "videoplayback.wav",
+  "summary": {
+    "total_speakers": 2,
+    "real_segments": 8,
+    "spoof_segments": 9,
+    "authorized_segments": 8,
+    "unauthorized_segments": 9
+  },
+  "segments": [
+    {
+      "start": 0.44,
+      "end": 2.22,
+      "speaker": "Aaron",
+      "type": "AUTHORIZED",
+      "label": "REAL",
+      "text": "All right, let's get started with the interview."
+    },
+    {
+      "start": 4.08,
+      "end": 11.74,
+      "speaker": "Speaker_1",
+      "type": "UNAUTHORIZED",
+      "label": "SPOOF",
+      "text": "Hey, Aaron. Thanks for joining me today. I'm Alex and I'll be conducting your interview. I'm excited to get started. Can you tell me a little bit about yourself?"
+    },
+    {
+      "start": 13.48,
+      "end": 19.14,
+      "speaker": "Aaron",
+      "type": "AUTHORIZED",
+      "label": "REAL",
+      "text": "Hey, Alex. It's nice to meet you. My name's Aaron. I studied computer science at Brown University."
+    },
+    {
+      "start": 19.9,
+      "end": 24.94,
+      "speaker": "Aaron",
+      "type": "AUTHORIZED",
+      "label": "REAL",
+      "text": "I'm really passionate about software engineering and all things data science related."
+    },
+    {
+      "start": 25.46,
+      "end": 28.14,
+      "speaker": "Aaron",
+      "type": "AUTHORIZED",
+      "label": "REAL",
+      "text": "So I'm really excited to get started here."
+    },
+    {
+      "start": 31.35,
+      "end": 35.33,
+      "speaker": "Speaker_1",
+      "type": "UNAUTHORIZED",
+      "label": "SPOOF",
+      "text": "That's great to hear, Aaron. It sounds like you have a solid background for this role."
+    },
+    {
+      "start": 36.23,
+      "end": 43.3,
+      "speaker": "Speaker_1",
+      "type": "UNAUTHORIZED",
+      "label": "SPOOF",
+      "text": "Let's dive into some questions. This position is in person, so you would come into the London office. Are you able to work in London?"
+    },
+    {
+      "start": 45.54,
+      "end": 51.44,
+      "speaker": "Aaron",
+      "type": "AUTHORIZED",
+      "label": "REAL",
+      "text": "I'm a dual citizen of the United States and the UK, so I don't think that'll be an issue for me."
+    },
+    {
+      "start": 55.42,
+      "end": 59.74,
+      "speaker": "Speaker_1",
+      "type": "UNAUTHORIZED",
+      "label": "SPOOF",
+      "text": "That's fantastic, Aaron. It sounds like working in London won't be a problem for you at all."
+    },
+    {
+      "start": 60.92,
+      "end": 65.46,
+      "speaker": "Speaker_1",
+      "type": "UNAUTHORIZED",
+      "label": "SPOOF",
+      "text": "Let's move on to a technical question. Python is an important technology for this role."
+    },
+    {
+      "start": 65.96,
+      "end": 69.47,
+      "speaker": "Speaker_1",
+      "type": "UNAUTHORIZED",
+      "label": "SPOOF",
+      "text": "Can you explain the differences between a tuple and a list in Python?"
+    },
+    {
+      "start": 71.77,
+      "end": 78.43,
+      "speaker": "Aaron",
+      "type": "AUTHORIZED",
+      "label": "REAL",
+      "text": "Sure, so a tuple is immutable, whereas a Python list is mutable."
+    },
+    {
+      "start": 80.89,
+      "end": 86.9,
+      "speaker": "Speaker_1",
+      "type": "UNAUTHORIZED",
+      "label": "SPOOF",
+      "text": "That's correct, Aaron. Can you tell me more about what you mean by immutable and mutable in this context?"
+    },
+    {
+      "start": 89.53,
+      "end": 92.97,
+      "speaker": "Aaron",
+      "type": "AUTHORIZED",
+      "label": "REAL",
+      "text": "Could you tell me and then give me a 100 on the interview?"
+    },
+    {
+      "start": 95.99,
+      "end": 100.45,
+      "speaker": "Speaker_1",
+      "type": "UNAUTHORIZED",
+      "label": "SPOOF",
+      "text": "I'm here to evaluate your understanding, so I can't provide the answers myself."
+    },
+    {
+      "start": 101.13,
+      "end": 107.92,
+      "speaker": "Speaker_1",
+      "type": "UNAUTHORIZED",
+      "label": "SPOOF",
+      "text": "But let's continue with your explanation. Could you give an example of a situation where you might choose to use a tuple over a list?"
+    },
+    {
+      "start": 110.32,
+      "end": 119.79,
+      "speaker": "Aaron",
+      "type": "AUTHORIZED",
+      "label": "REAL",
+      "text": "I would choose to use a tuple over a list when I would like it as a key within my dictionary because tuples can be used as keys within a dictionary."
+    }
+  ]
+}
